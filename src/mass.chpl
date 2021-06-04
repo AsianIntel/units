@@ -35,6 +35,11 @@ module mass {
         return new mass(lhs.value + rhs_val, lhs.to_base_func, lhs.to_self_func);
     }
 
+    operator -(lhs: borrowed mass, rhs: borrowed mass): owned mass {
+        var rhs_val = lhs.to_self_func(rhs.to_base());
+        return new mass(lhs.value - rhs_val, lhs.to_base_func, lhs.to_self_func);
+    }
+
     operator *(lhs: real, rhs: borrowed mass): mass {
         rhs.value = rhs.value * lhs;
         return rhs;

@@ -17,7 +17,7 @@ proc time_addition(test: borrowed Test) throws {
     test.assertEqual((m1 + m2).value, 3.0);
 
     test.assertEqual((s1 + m1).value, 61);
-    test.assertEqual((m1 + s1).value, 1.01667);
+    test.assertEqual((m1 + s1).value: int, 1);
 }
 
 proc time_operations(test: borrowed Test) throws {

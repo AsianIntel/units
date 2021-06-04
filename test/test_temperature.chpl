@@ -22,8 +22,8 @@ proc temperature_addition(test: borrowed Test) throws {
     var f2 = new fahrenheit(2);
     test.assertEqual((f1 + f2).value: int, 3);
 
-    // test.assertEqual((k1 + c1).value, 275.15);
-    // test.assertEqual((k1 + f1).value, 256.927778);
+    test.assertEqual((k1 + c1).value: int, 275);
+    test.assertEqual((k1 + f1).value: int, 256);
 }
 
 proc temperature_operations(test: borrowed Test) throws {

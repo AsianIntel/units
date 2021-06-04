@@ -35,6 +35,11 @@ module length {
         return new length(lhs.value + rhs_val, lhs.to_base_func, lhs.to_self_func);
     }
 
+    operator -(lhs: borrowed length, rhs: borrowed length): owned length {
+        var rhs_val = lhs.to_self_func(rhs.to_base());
+        return new length(lhs.value - rhs_val, lhs.to_base_func, lhs.to_self_func);
+    }
+
     operator *(lhs: real, rhs: borrowed length): length {
         rhs.value = rhs.value * lhs;
         return rhs;

@@ -14,7 +14,7 @@ module unit {
             halt("Virtual method");
         }
 
-        proc dims(other: borrowed unit): bool {
+        proc dims(other: borrowed unit) param {
             return (
                 this.length == other.length &&
                 this.mass == other.mass &&
@@ -25,5 +25,9 @@ module unit {
                 this.luminosity == other.luminosity
             );
         }
+    }
+
+    operator +(lhs: borrowed unit, rhs: borrowed unit): owned unit {
+        compilerError("This type of operation is not possible");
     }
 }
