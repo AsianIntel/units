@@ -27,7 +27,7 @@ module unit {
         }
     }
 
-    operator +(lhs: borrowed unit, rhs: borrowed unit): owned unit {
-        compilerError("This type of operation is not possible");
+    class derived_unit: unit {
+        var value: real;
     }
 }
