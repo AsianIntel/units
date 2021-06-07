@@ -1,6 +1,9 @@
 use UnitTest;
+use Math;
 use unit;
 use temperature;
+
+config const epsilon: real = 10e-6;
 
 proc temperature_compile(test: borrowed Test) throws {
     var k = new kelvin(1);
@@ -20,10 +23,10 @@ proc temperature_addition(test: borrowed Test) throws {
 
     var f1 = new fahrenheit(1);
     var f2 = new fahrenheit(2);
-    test.assertEqual((f1 + f2).value: int, 3);
+    test.assertLessThan(abs((f1 + f2).value - 3.0), epsilon);
 
-    test.assertEqual((k1 + c1).value: int, 275);
-    test.assertEqual((k1 + f1).value: int, 256);
+    test.assertLessThan(abs((k1 + c1).value - 275.15), epsilon);
+    test.assertLessThan(abs((k1 + f1).value - 256.92778), epsilon);
 }
 
 proc temperature_operations(test: borrowed Test) throws {

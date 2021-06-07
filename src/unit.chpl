@@ -10,10 +10,6 @@ module unit {
         param substance: int;
         param luminosity: int;
 
-        proc to_base(): real {
-            halt("Virtual method");
-        }
-
         proc dims(other: borrowed unit) param {
             return (
                 this.length == other.length &&

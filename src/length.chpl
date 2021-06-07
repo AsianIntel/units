@@ -13,7 +13,7 @@ module length {
             this.to_self_func = to_self_func;
         }
 
-        override proc to_base(): real {
+        proc to_base(): real {
             return this.to_base_func(value);
         }
     }
