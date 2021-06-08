@@ -7,7 +7,7 @@ module lumin {
         var to_self_func: func(real, real);
         
         proc init(value: real, to_base_func, to_self_func) {
-            super.init(0, 0, 0, 0, 0, 1, 0);
+            super.init(0, 0, 0, 0, 0, 0, 1);
             this.value = value;
             this.to_base_func = to_base_func;
             this.to_self_func = to_self_func;
