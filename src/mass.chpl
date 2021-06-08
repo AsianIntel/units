@@ -3,41 +3,45 @@ module mass {
 
     class mass: unit {
         var value: real;
-        var to_base_func: func(real, real);
-        var to_self_func: func(real, real);
+        var coefficient: real;
+        var constant: real;
         
-        proc init(value: real, to_base_func, to_self_func) {
+        proc init(value: real, coefficient: real, constant: real) {
             super.init(0, 1, 0, 0, 0, 0, 0);
             this.value = value;
-            this.to_base_func = to_base_func;
-            this.to_self_func = to_self_func;
+            this.coefficient = coefficient;
+            this.constant = constant;
+        }
+
+        proc from_base(val: real): real {
+            return coefficient * val + constant;
         }
 
         proc to_base(): real {
-            return this.to_base_func(value);
+            return (value - constant) / coefficient;
         }
     }
 
     class kilogram: mass {
         proc init(value: real) {
-            super.init(value, lambda(x: real) { return x * 1000; }, lambda(x: real) { return x / 1000; });
+            super.init(value, 0.001, 0);
         }
     }
 
     class gram: mass {
         proc init(value: real) {
-            super.init(value, lambda(x: real) { return x; }, lambda(x: real) { return x; });
+            super.init(value, 1, 0);
         }
     }
 
     operator +(lhs: borrowed mass, rhs: borrowed mass): owned mass {
-        var rhs_val = lhs.to_self_func(rhs.to_base());
-        return new mass(lhs.value + rhs_val, lhs.to_base_func, lhs.to_self_func);
+        var rhs_val = lhs.from_base(rhs.to_base());
+        return new mass(lhs.value + rhs_val, lhs.coefficient, lhs.constant);
     }
 
     operator -(lhs: borrowed mass, rhs: borrowed mass): owned mass {
-        var rhs_val = lhs.to_self_func(rhs.to_base());
-        return new mass(lhs.value - rhs_val, lhs.to_base_func, lhs.to_self_func);
+        var rhs_val = lhs.from_base(rhs.to_base());
+        return new mass(lhs.value - rhs_val, lhs.coefficient, lhs.constant);
     }
 
     operator *(lhs: real, rhs: borrowed mass): mass {
@@ -46,7 +50,7 @@ module mass {
     }
 
     operator ==(lhs: borrowed mass, rhs: borrowed mass): bool {
-        var rhs_val = lhs.to_self_func(rhs.to_base());
+        var rhs_val = lhs.from_base(rhs.to_base());
         return lhs.value == rhs_val;
     }
 

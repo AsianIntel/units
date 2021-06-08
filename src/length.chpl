@@ -1,43 +1,49 @@
 module length {
     private use unit;
+    private use unit_time;
+    private use velocity;
 
     class length: unit {
         var value: real;
-        var to_base_func: func(real, real);
-        var to_self_func: func(real, real);
+        var coefficient: real;
+        var constant: real;
         
-        proc init(value: real, to_base_func, to_self_func) {
+        proc init(value: real, coefficient: real, constant: real) {
             super.init(1, 0, 0, 0, 0, 0, 0);
             this.value = value;
-            this.to_base_func = to_base_func;
-            this.to_self_func = to_self_func;
+            this.coefficient = coefficient;
+            this.constant = constant;
+        }
+
+        proc from_base(val: real): real {
+            return coefficient * val + constant;
         }
 
         proc to_base(): real {
-            return this.to_base_func(value);
+            return (value - constant) / coefficient;
         }
     }
 
     class meter: length {
         proc init(value: real) {
-            super.init(value, lambda(x: real) { return x * 1; }, lambda(x: real) { return x * 1; });
+            super.init(value, 1, 0);
         }
     }
 
     class centimetre: length {
         proc init(value: real) {
-            super.init(value, lambda(x: real) { return x * 0.01; }, lambda(x: real) { return x * 100; });
+            super.init(value, 100, 0);
         }
     }
 
     operator +(lhs: borrowed length, rhs: borrowed length): owned length {
-        var rhs_val = lhs.to_self_func(rhs.to_base());
-        return new length(lhs.value + rhs_val, lhs.to_base_func, lhs.to_self_func);
+        var rhs_val = lhs.from_base(rhs.to_base());
+        return new length(lhs.value + rhs_val, lhs.coefficient, lhs.constant);
     }
 
     operator -(lhs: borrowed length, rhs: borrowed length): owned length {
-        var rhs_val = lhs.to_self_func(rhs.to_base());
-        return new length(lhs.value - rhs_val, lhs.to_base_func, lhs.to_self_func);
+        var rhs_val = lhs.from_base(rhs.to_base());
+        return new length(lhs.value - rhs_val, lhs.coefficient, lhs.constant);
     }
 
     operator *(lhs: real, rhs: borrowed length): length {
@@ -46,11 +52,15 @@ module length {
     }
 
     operator ==(lhs: borrowed length, rhs: borrowed length): bool {
-        var rhs_val = lhs.to_self_func(rhs.to_base());
+        var rhs_val = lhs.from_base(rhs.to_base());
         return lhs.value == rhs_val;
     }
 
     operator !=(lhs: borrowed length, rhs: borrowed length): bool {
         return !(lhs == rhs);
+    }
+
+    operator /(lhs: borrowed length, rhs: borrowed time): owned velocity {
+        return new velocity(lhs.value / rhs.value, lhs.coefficient / rhs.coefficient, 0);
     }
 }

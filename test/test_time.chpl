@@ -1,5 +1,8 @@
 use UnitTest;
 use unit_time;
+use Math;
+
+config const epsilon: real = 10e-6;
 
 proc time_compile(test: borrowed Test) throws {
     var s = new second(1);
@@ -16,8 +19,8 @@ proc time_addition(test: borrowed Test) throws {
     var m2 = new minute(2);
     test.assertEqual((m1 + m2).value, 3.0);
 
-    test.assertEqual((s1 + m1).value, 61);
-    test.assertEqual((m1 + s1).value: int, 1);
+    test.assertLessThan(abs((s1 + m1).value - 61.0), epsilon);
+    test.assertLessThan(abs((m1 + s1).value - 1.01667), epsilon);
 }
 
 proc time_operations(test: borrowed Test) throws {
