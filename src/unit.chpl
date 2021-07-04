@@ -8,7 +8,7 @@ module unit {
         param electric_current: int;
         param temperature: int;
         param substance: int;
-        param luminosity: int;
+        param luminous_intensity: int;
 
         proc dims(other: borrowed unit) param {
             return (
@@ -18,12 +18,12 @@ module unit {
                 this.electric_current == other.electric_current &&
                 this.temperature == other.temperature &&
                 this.substance == other.substance &&
-                this.luminosity == other.luminosity
+                this.luminous_intensity == other.luminous_intensity
             );
         }
-    }
 
-    class derived_unit: unit {
-        var value: real;
+        proc value(): real { halt("Virtual class method"); }
+        proc from_base(val: real): real { halt("Virtual class method"); }
+        proc to_base(): real { halt("Virtual class method"); }
     }
 }

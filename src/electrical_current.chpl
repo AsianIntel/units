@@ -1,13 +1,13 @@
-module mass {
+module electrical_current {
     private use unit;
 
-    class mass: unit {
+    class electrical_current: unit {
         var _value: real;
         var coefficient: real;
         var constant: real;
         
         proc init(value: real, coefficient: real, constant: real) {
-            super.init(0, 1, 0, 0, 0, 0, 0);
+            super.init(0, 0, 0, 1, 0, 0, 0);
             this._value = value;
             this.coefficient = coefficient;
             this.constant = constant;
@@ -26,39 +26,39 @@ module mass {
         }
     }
 
-    class kilogram: mass {
+    class kiloampere: electrical_current {
         proc init(value: real) {
             super.init(value, 0.001, 0);
         }
     }
 
-    class gram: mass {
+    class ampere: electrical_current {
         proc init(value: real) {
             super.init(value, 1, 0);
         }
     }
 
-    operator +(lhs: borrowed mass, rhs: borrowed mass): owned mass {
+    operator +(lhs: borrowed electrical_current, rhs: borrowed electrical_current): owned electrical_current {
         var rhs_val = lhs.from_base(rhs.to_base());
-        return new mass(lhs._value + rhs_val, lhs.coefficient, lhs.constant);
+        return new electrical_current(lhs._value + rhs_val, lhs.coefficient, lhs.constant);
     }
 
-    operator -(lhs: borrowed mass, rhs: borrowed mass): owned mass {
+    operator -(lhs: borrowed electrical_current, rhs: borrowed electrical_current): owned electrical_current {
         var rhs_val = lhs.from_base(rhs.to_base());
-        return new mass(lhs._value - rhs_val, lhs.coefficient, lhs.constant);
+        return new electrical_current(lhs._value - rhs_val, lhs.coefficient, lhs.constant);
     }
 
-    operator *(lhs: real, rhs: borrowed mass): mass {
+    operator *(lhs: real, rhs: borrowed electrical_current): electrical_current {
         rhs._value = rhs._value * lhs;
         return rhs;
     }
 
-    operator ==(lhs: borrowed mass, rhs: borrowed mass): bool {
+    operator ==(lhs: borrowed electrical_current, rhs: borrowed electrical_current): bool {
         var rhs_val = lhs.from_base(rhs.to_base());
         return lhs._value == rhs_val;
     }
 
-    operator !=(lhs: borrowed mass, rhs: borrowed mass): bool {
+    operator !=(lhs: borrowed electrical_current, rhs: borrowed electrical_current): bool {
         return !(lhs == rhs);
     }
 }

@@ -1,13 +1,13 @@
-module mass {
+module luminous_intensity {
     private use unit;
 
-    class mass: unit {
+    class luminous_intensity: unit {
         var _value: real;
         var coefficient: real;
         var constant: real;
         
         proc init(value: real, coefficient: real, constant: real) {
-            super.init(0, 1, 0, 0, 0, 0, 0);
+            super.init(0, 0, 0, 0, 0, 0, 1);
             this._value = value;
             this.coefficient = coefficient;
             this.constant = constant;
@@ -26,39 +26,39 @@ module mass {
         }
     }
 
-    class kilogram: mass {
+    class kilocandela: luminous_intensity {
         proc init(value: real) {
             super.init(value, 0.001, 0);
         }
     }
 
-    class gram: mass {
+    class candela: luminous_intensity {
         proc init(value: real) {
             super.init(value, 1, 0);
         }
     }
-
-    operator +(lhs: borrowed mass, rhs: borrowed mass): owned mass {
+    
+    operator +(lhs: borrowed luminous_intensity, rhs: borrowed luminous_intensity): owned luminous_intensity {
         var rhs_val = lhs.from_base(rhs.to_base());
-        return new mass(lhs._value + rhs_val, lhs.coefficient, lhs.constant);
+        return new luminous_intensity(lhs._value + rhs_val, lhs.coefficient, lhs.constant);
     }
 
-    operator -(lhs: borrowed mass, rhs: borrowed mass): owned mass {
+    operator -(lhs: borrowed luminous_intensity, rhs: borrowed luminous_intensity): owned luminous_intensity {
         var rhs_val = lhs.from_base(rhs.to_base());
-        return new mass(lhs._value - rhs_val, lhs.coefficient, lhs.constant);
+        return new luminous_intensity(lhs._value - rhs_val, lhs.coefficient, lhs.constant);
     }
 
-    operator *(lhs: real, rhs: borrowed mass): mass {
+    operator *(lhs: real, rhs: borrowed luminous_intensity): luminous_intensity {
         rhs._value = rhs._value * lhs;
         return rhs;
     }
 
-    operator ==(lhs: borrowed mass, rhs: borrowed mass): bool {
+    operator ==(lhs: borrowed luminous_intensity, rhs: borrowed luminous_intensity): bool {
         var rhs_val = lhs.from_base(rhs.to_base());
         return lhs._value == rhs_val;
     }
 
-    operator !=(lhs: borrowed mass, rhs: borrowed mass): bool {
+    operator !=(lhs: borrowed luminous_intensity, rhs: borrowed luminous_intensity): bool {
         return !(lhs == rhs);
     }
 }
