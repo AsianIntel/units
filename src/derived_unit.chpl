@@ -16,7 +16,7 @@ module derived_unit {
 
         override proc to_base(): real {
             return (_value - constant) / coefficient;
-        }
+        }        
     }
 
     operator +(lhs: borrowed derived_unit, rhs: borrowed derived_unit): owned derived_unit where lhs.dims(rhs) {
@@ -28,7 +28,7 @@ module derived_unit {
         var rhs_val = lhs.from_base(rhs.to_base());
         return new derived_unit(lhs.length, lhs.mass, lhs.time, lhs.electric_current, lhs.temperature, lhs.substance, lhs.luminous_intensity, lhs._value - rhs_val, lhs.coefficient, lhs.constant);
     }
-
+    
     operator *(lhs: real, rhs: borrowed derived_unit): derived_unit {
         rhs._value = rhs._value * lhs;
         return rhs;

@@ -24,7 +24,7 @@ module length {
 
         override proc to_base(): real {
             return (_value - constant) / coefficient;
-        }
+        }        
     }
 
     class meter: length {
@@ -47,6 +47,16 @@ module length {
     operator -(lhs: borrowed length, rhs: borrowed length): owned length {
         var rhs_val = lhs.from_base(rhs.to_base());
         return new length(lhs._value - rhs_val, lhs.coefficient, lhs.constant);
+    }
+
+    operator *(lhs: borrowed length, rhs: borrowed length): owned derived_unit {
+        var rhs_val = lhs.from_base(rhs.to_base());
+        return new derived_unit(2, 0, 0, 0, 0, 0, 0, lhs._value * rhs_val, lhs.coefficient, lhs.constant);
+    }
+
+    operator /(lhs: borrowed length, rhs: borrowed length): real {
+        var rhs_val = lhs.from_base(rhs.to_base());
+        return lhs._value/rhs_val;
     }
 
     operator *(lhs: real, rhs: borrowed length): length {

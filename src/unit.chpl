@@ -21,9 +21,10 @@ module unit {
                 this.luminous_intensity == other.luminous_intensity
             );
         }
+        
 
         proc value(): real { halt("Virtual class method"); }
         proc from_base(val: real): real { halt("Virtual class method"); }
-        proc to_base(): real { halt("Virtual class method"); }
+        proc to_base(): real { halt("Virtual class method"); }                
     }
 }
