@@ -28,6 +28,18 @@ module derived_unit {
         var rhs_val = lhs.from_base(rhs.to_base());
         return new derived_unit(lhs.length, lhs.mass, lhs.time, lhs.electric_current, lhs.temperature, lhs.substance, lhs.luminous_intensity, lhs._value - rhs_val, lhs.coefficient, lhs.constant);
     }
+
+    operator *(lhs: borrowed derived_unit, rhs: borrowed derived_unit): owned derived_unit {
+        var lhs_val = lhs.to_base();
+        var rhs_val = rhs.to_base();
+        return new derived_unit(lhs.length + rhs.length, lhs.mass + rhs.mass, lhs.time + rhs.time, lhs.electric_current + rhs.electric_current, lhs.temperature + rhs.temperature, lhs.substance + rhs.substance, lhs.luminous_intensity + rhs.luminous_intensity, lhs_val * rhs_val, 1, lhs.constant);
+    }
+
+    operator /(lhs: borrowed derived_unit, rhs: borrowed derived_unit): owned derived_unit {
+        var lhs_val = lhs.to_base();
+        var rhs_val = rhs.to_base();
+        return new derived_unit(lhs.length - rhs.length, lhs.mass - rhs.mass, lhs.time - rhs.time, lhs.electric_current - rhs.electric_current, lhs.temperature - rhs.temperature, lhs.substance - rhs.substance, lhs.luminous_intensity - rhs.luminous_intensity, lhs_val / rhs_val, 1, lhs.constant);
+    }
     
     operator *(lhs: real, rhs: borrowed derived_unit): derived_unit {
         rhs._value = rhs._value * lhs;
