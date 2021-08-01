@@ -1,0 +1,43 @@
+.. default-domain:: chpl
+
+.. module:: unit
+
+unit
+====
+**Usage**
+
+.. code-block:: chapel
+
+   use unit;
+
+
+or
+
+.. code-block:: chapel
+
+   import unit;
+
+.. class:: unit
+
+   .. attribute:: param length: int
+
+   .. attribute:: param mass: int
+
+   .. attribute:: param time: int
+
+   .. attribute:: param electric_current: int
+
+   .. attribute:: param temperature: int
+
+   .. attribute:: param substance: int
+
+   .. attribute:: param luminous_intensity: int
+
+   .. method:: proc dims(other: borrowed unit) param
+
+   .. method:: proc value(): real
+
+   .. method:: proc from_base(val: real): real
+
+   .. method:: proc to_base(): real
+
