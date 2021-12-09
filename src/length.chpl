@@ -18,6 +18,14 @@ module length {
             return _value;
         }
 
+        override proc coefficient(): real {
+            return coefficient;
+        }
+
+        override proc constant(): real {
+            return constant;
+        }
+
         override proc from_base(val: real): real {
             return coefficient * val + constant;
         }
