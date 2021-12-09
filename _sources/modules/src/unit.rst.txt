@@ -37,6 +37,10 @@ or
 
    .. method:: proc value(): real
 
+   .. method:: proc coefficient(): real
+
+   .. method:: proc constant(): real
+
    .. method:: proc from_base(val: real): real
 
    .. method:: proc to_base(): real
