@@ -18,11 +18,11 @@ module length {
             return _value;
         }
 
-        override proc coefficient(): real {
+        override proc getCoefficient(): real {
             return coefficient;
         }
 
-        override proc constant(): real {
+        override proc getConstant(): real {
             return constant;
         }
 

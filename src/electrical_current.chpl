@@ -17,13 +17,13 @@ module electrical_current {
             return _value;
         }
 
-        override proc coefficient(): real {
+        override proc getCoefficient(): real {
             return coefficient;
         }
 
-        override proc constant(): real {
+        override proc getConstant(): real {
             return constant;
-        }
+        }        
 
         override proc from_base(val: real): real {
             return coefficient * val + constant;

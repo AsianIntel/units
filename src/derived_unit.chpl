@@ -10,11 +10,11 @@ module derived_unit {
             return _value;
         }
 
-        override proc coefficient(): real {
+        override proc getCoefficient(): real {
             return coefficient;
         }
 
-        override proc constant(): real {
+        override proc getConstant(): real {
             return constant;
         }
 
@@ -30,7 +30,7 @@ module derived_unit {
     operator +(lhs: borrowed derived_unit, rhs: borrowed derived_unit): owned derived_unit where lhs.dims(rhs) {
         var rhs_val = lhs.from_base(rhs.to_base());
         return new derived_unit(lhs.length, lhs.mass, lhs.time, lhs.electric_current, lhs.temperature, lhs.substance, lhs.luminous_intensity, lhs._value + rhs_val, lhs.coefficient, lhs.constant);
-    }
+    }   
 
     operator -(lhs: borrowed derived_unit, rhs: borrowed derived_unit): owned derived_unit where lhs.dims(rhs) {
         var rhs_val = lhs.from_base(rhs.to_base());

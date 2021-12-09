@@ -24,8 +24,8 @@ module unit {
         
 
         proc value(): real { halt("Virtual class method"); }
-        proc coefficient(): real { halt("Virtual class method"); }
-        proc constant(): real { halt("Virtual class method"); }
+        proc getCoefficient(): real { halt("Virtual class method"); }
+        proc getConstant(): real { halt("Virtual class method"); }
         proc from_base(val: real): real { halt("Virtual class method"); }
         proc to_base(): real { halt("Virtual class method"); }                
     }
