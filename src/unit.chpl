@@ -1,16 +1,26 @@
 module unit {
     private use IO;
 
-    class unit {
-        param length: int;
-        param mass: int;
-        param time: int;
-        param electric_current: int;
-        param temperature: int;
-        param substance: int;
-        param luminous_intensity: int;
+    record unit {
+        var length: int;
+        var mass: int;
+        var time: int;
+        var electric_current: int;
+        var temperature: int;
+        var substance: int;
+        var luminous_intensity: int;
 
-        proc dims(other: borrowed unit) param {
+        proc init(Length: int, Mass: int, Time: int, ElectricCurrent: int, Temperature: int, Substance: int, LuminousIntensity: int) {
+            this.length = Length;
+            this.mass = Mass;
+            this.time = Time;
+            this.electric_current = ElectricCurrent;
+            this.temperature = Temperature;
+            this.substance = Substance;
+            this.luminous_intensity = LuminousIntensity;
+        }
+
+        proc dims(other: unit) param {
             return (
                 this.length == other.length &&
                 this.mass == other.mass &&
@@ -20,13 +30,6 @@ module unit {
                 this.substance == other.substance &&
                 this.luminous_intensity == other.luminous_intensity
             );
-        }
-        
-
-        proc value(): real { halt("Virtual class method"); }
-        proc getCoefficient(): real { halt("Virtual class method"); }
-        proc getConstant(): real { halt("Virtual class method"); }
-        proc from_base(val: real): real { halt("Virtual class method"); }
-        proc to_base(): real { halt("Virtual class method"); }                
+        }                       
     }
 }

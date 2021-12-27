@@ -2,72 +2,71 @@ module length {
     private use unit;
     private use derived_unit;
 
-    class length: unit {
+    record length {
+        var dims: unit;
         var _value: real;
         var coefficient: real;
         var constant: real;
+        var lengthType: string;
         
-        proc init(value: real, coefficient: real, constant: real) {
-            super.init(1, 0, 0, 0, 0, 0, 0);
+        proc init(value: real, coefficient: real, constant: real, lengthType: string) {  
+            this.dims = new unit(1, 0, 0, 0, 0, 0, 0);          
             this._value = value;
             this.coefficient = coefficient;
             this.constant = constant;
+            this.lengthType = lengthType;
         }
 
-        override proc value(): real {
+        proc value(): real {
             return _value;
         }
 
-        override proc getCoefficient(): real {
+        proc getCoefficient(): real {
             return coefficient;
         }
 
-        override proc getConstant(): real {
+        proc getConstant(): real {
             return constant;
-        }
+        }        
 
-        override proc from_base(val: real): real {
+        proc from_base(val: real): real {
             return coefficient * val + constant;
         }
 
-        override proc to_base(): real {
+        proc to_base(): real {
             return (_value - constant) / coefficient;
         }        
     }
 
-    class meter: length {
-        proc init(value: real) {
-            super.init(value, 1, 0);
-        }
+    proc meter(value: real, constant: real): length {
+        return new length(value, 1, constant, "meter");
     }
 
-    class centimetre: length {
-        proc init(value: real) {
-            super.init(value, 100, 0);
-        }
-    }
+    proc centimetre(value: real, constant: real): length {
+        return new length(value, 100, constant, "centimetre");
+    }   
 
-    operator +(lhs: borrowed length, rhs: borrowed length): owned length {
+    operator +(lhs: length, rhs: length): length {
         var rhs_val = lhs.from_base(rhs.to_base());
-        return new length(lhs._value + rhs_val, lhs.coefficient, lhs.constant);
+        return new length(lhs._value + rhs_val, lhs.coefficient, lhs.constant, lhs.lengthType);
     }
 
-    operator -(lhs: borrowed length, rhs: borrowed length): owned length {
+    operator -(lhs: length, rhs: length): length {
         var rhs_val = lhs.from_base(rhs.to_base());
-        return new length(lhs._value - rhs_val, lhs.coefficient, lhs.constant);
+        return new length(lhs._value - rhs_val, lhs.coefficient, lhs.constant, lhs.lengthType);
     }
 
-    operator *(lhs: real, rhs: borrowed length): length {
+    operator *(lhs: real, inout rhs: length): length {
         rhs._value = rhs._value * lhs;
         return rhs;
     }
 
-    operator ==(lhs: borrowed length, rhs: borrowed length): bool {
+    operator ==(lhs: length, rhs: length): bool {
         var rhs_val = lhs.from_base(rhs.to_base());
         return lhs._value == rhs_val;
     }
 
-    operator !=(lhs: borrowed length, rhs: borrowed length): bool {
+    operator !=(lhs: length, rhs: length): bool {
         return !(lhs == rhs);
-    }
+    }    
 }
