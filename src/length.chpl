@@ -38,12 +38,12 @@ module length {
         }        
     }
 
-    proc meter(value: real, constant: real): length {
-        return new length(value, 1, constant, "meter");
+    proc meter(value: real): length {
+        return new length(value, 1, 0, "meter");
     }
 
-    proc centimetre(value: real, constant: real): length {
-        return new length(value, 100, constant, "centimetre");
+    proc centimetre(value: real): length {
+        return new length(value, 100, 0, "centimetre");
     }   
 
     operator +(lhs: length, rhs: length): length {
