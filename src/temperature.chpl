@@ -46,7 +46,7 @@ module temperature {
     }
 
     proc fahrenheit(value: real): temperature {
-        return new temperature(value, 9.0/5.0, -459.67, "fahrenheit")
+        return new temperature(value, 9.0/5.0, -459.67, "fahrenheit");
 
     }  
 
