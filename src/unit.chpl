@@ -20,7 +20,7 @@ module unit {
             this.luminous_intensity = LuminousIntensity;
         }
 
-        proc dims(other: unit) param {
+        proc checkDims(other: unit) param {
             return (
                 this.length == other.length &&
                 this.mass == other.mass &&
@@ -31,5 +31,27 @@ module unit {
                 this.luminous_intensity == other.luminous_intensity
             );
         }                       
+    }
+
+    operator +(lhs: unit, rhs: unit): unit {
+        return new unit(
+            lhs.length + rhs.length,
+            lhs.mass + rhs.mass,
+            lhs.time + rhs.time,
+            lhs.electric_current + rhs.electric_current,
+            lhs.temperature + rhs.temperature,
+            lhs.substance + rhs.substance,
+            lhs.luminous_intensity + rhs.luminous_intensity);
+    }
+
+    operator -(lhs: unit, rhs: unit): unit {
+        return new unit(
+            lhs.length - rhs.length,
+            lhs.mass - rhs.mass,
+            lhs.time - rhs.time,
+            lhs.electric_current - rhs.electric_current,
+            lhs.temperature - rhs.temperature,
+            lhs.substance - rhs.substance,
+            lhs.luminous_intensity - rhs.luminous_intensity);
     }
 }
