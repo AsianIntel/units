@@ -2,9 +2,19 @@ module derived_unit {
     private use unit;
 
     record derived_unit {
+        var dims: unit;
         var _value: real;
         var coefficient: real;
         var constant: real;
+        var derivedUnitType: string;
+
+        proc init(dims: unit, value: real, coefficient: real, constant: real, derivedUnitType: string) {
+            this.dims = dims;
+            this._value = value;
+            this.coefficient = coefficient;
+            this.constant = constant;
+            this.derivedUnitType = derivedUnitType;            
+        }
 
         proc value(): real {
             return _value;
@@ -26,6 +36,31 @@ module derived_unit {
             return (_value - constant) / coefficient;
         }        
     }
+
+    operator +(lhs: derived_unit, rhs: derived_unit): derived_unit where lhs.dims.checkDims(rhs.dims) {
+        var rhs_val = lhs.from_base(rhs.to_base());
+        return new derived_unit(lhs.dims, lhs._value + rhs_val, lhs.coefficient, lhs.constant, lhs.derivedUnitType);
+    }
+
+    operator -(lhs: derived_unit, rhs: derived_unit): derived_unit where lhs.dims.checkDims(rhs.dims) {
+        var rhs_val = lhs.from_base(rhs.to_base());
+        return new derived_unit(lhs.dims, lhs._value - rhs_val, lhs.coefficient, lhs.constant, lhs.derivedUnitType);
+    }
+
+    operator *(lhs: real, inout rhs: derived_unit): derived_unit {
+        rhs._value = rhs._value * lhs;
+        return rhs;
+    }
+
+    operator ==(lhs: derived_unit, rhs: derived_unit): bool where lhs.dims.checkDims(rhs.dims) {
+        var rhs_val = lhs.from_base(rhs.to_base());
+        return lhs._value == rhs_val;
+    }
+
+    operator !=(lhs: derived_unit, rhs: derived_unit): bool where lhs.dims.checkDims(rhs.dims) {
+        return !(lhs == rhs);
+    }
+    
 
     // operator +(lhs: borrowed derived_unit, rhs: borrowed derived_unit): owned derived_unit where lhs.dims(rhs) {
     //     var rhs_val = lhs.from_base(rhs.to_base());
