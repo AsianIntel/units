@@ -5,15 +5,13 @@ module mass {
         var dims: unit;
         var _value: real;
         var coefficient: real;
-        var constant: real;
-        var massType: string;
+        var constant: real;        
         
-        proc init(value: real, coefficient: real, constant: real, massType: string) {  
+        proc init(value: real, coefficient: real, constant: real) {  
             this.dims = new unit(0, 1, 0, 0, 0, 0, 0);          
             this._value = value;
             this.coefficient = coefficient;
-            this.constant = constant;
-            this.massType = massType;
+            this.constant = constant;            
         }
 
         proc value(): real {
@@ -38,21 +36,21 @@ module mass {
     }
 
     proc gram(value: real): mass {
-        return new mass(value, 1, 0, "gram");
+        return new mass(value, 1, 0);
     }
 
     proc kilogram(value: real): mass {
-        return new mass(value, 0.001, 0, "kilogram");
+        return new mass(value, 0.001, 0);
     }  
 
     operator +(lhs: mass, rhs: mass): mass {
         var rhs_val = lhs.from_base(rhs.to_base());
-        return new mass(lhs._value + rhs_val, lhs.coefficient, lhs.constant, lhs.massType);
+        return new mass(lhs._value + rhs_val, lhs.coefficient, lhs.constant);
     }
 
     operator -(lhs: mass, rhs: mass): mass {
         var rhs_val = lhs.from_base(rhs.to_base());
-        return new mass(lhs._value - rhs_val, lhs.coefficient, lhs.constant, lhs.massType);
+        return new mass(lhs._value - rhs_val, lhs.coefficient, lhs.constant);
     }
 
     operator *(lhs: real, inout rhs: mass): mass {

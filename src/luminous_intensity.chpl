@@ -5,15 +5,13 @@ module luminous_intensity {
         var dims: unit;
         var _value: real;
         var coefficient: real;
-        var constant: real;
-        var luminousIntensityType: string;
+        var constant: real;        
         
-        proc init(value: real, coefficient: real, constant: real, luminousIntensityType: string) {  
+        proc init(value: real, coefficient: real, constant: real) {  
             this.dims = new unit(0, 0, 0, 0, 0, 0, 1);          
             this._value = value;
             this.coefficient = coefficient;
-            this.constant = constant;
-            this.luminousIntensityType = luminousIntensityType;
+            this.constant = constant;            
         }
 
         proc value(): real {
@@ -38,21 +36,21 @@ module luminous_intensity {
     }
 
     proc candela(value: real): luminous_intensity {
-        return new luminous_intensity(value, 1, 0, "candela");
+        return new luminous_intensity(value, 1, 0);
     }
 
     proc kilocandela(value: real): luminous_intensity {
-        return new luminous_intensity(value, 0.001, 0, "kilocandela");
+        return new luminous_intensity(value, 0.001, 0);
     }   
     
     operator +(lhs: luminous_intensity, rhs: luminous_intensity): luminous_intensity {
         var rhs_val = lhs.from_base(rhs.to_base());
-        return new luminous_intensity(lhs._value + rhs_val, lhs.coefficient, lhs.constant, lhs.luminous_intensityType);
+        return new luminous_intensity(lhs._value + rhs_val, lhs.coefficient, lhs.constant);
     }
 
     operator -(lhs: luminous_intensity, rhs: luminous_intensity): luminous_intensity {
         var rhs_val = lhs.from_base(rhs.to_base());
-        return new luminous_intensity(lhs._value - rhs_val, lhs.coefficient, lhs.constant, lhs.luminous_intensityType);
+        return new luminous_intensity(lhs._value - rhs_val, lhs.coefficient, lhs.constant);
     }
 
     operator *(lhs: real, inout rhs: luminous_intensity): luminous_intensity {

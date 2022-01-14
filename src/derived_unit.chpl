@@ -5,15 +5,13 @@ module derived_unit {
         var dims: unit;
         var _value: real;
         var coefficient: real;
-        var constant: real;
-        var derivedUnitType: string;
+        var constant: real;        
 
-        proc init(dims: unit, value: real, coefficient: real, constant: real, derivedUnitType: string) {
+        proc init(dims: unit, value: real, coefficient: real, constant: real) {
             this.dims = dims;
             this._value = value;
             this.coefficient = coefficient;
-            this.constant = constant;
-            this.derivedUnitType = derivedUnitType;            
+            this.constant = constant;                       
         }
 
         proc value(): real {
@@ -39,12 +37,12 @@ module derived_unit {
 
     operator +(lhs: derived_unit, rhs: derived_unit): derived_unit where lhs.dims.checkDims(rhs.dims) {
         var rhs_val = lhs.from_base(rhs.to_base());
-        return new derived_unit(lhs.dims, lhs._value + rhs_val, lhs.coefficient, lhs.constant, lhs.derivedUnitType);
+        return new derived_unit(lhs.dims, lhs._value + rhs_val, lhs.coefficient, lhs.constant);
     }
 
     operator -(lhs: derived_unit, rhs: derived_unit): derived_unit where lhs.dims.checkDims(rhs.dims) {
         var rhs_val = lhs.from_base(rhs.to_base());
-        return new derived_unit(lhs.dims, lhs._value - rhs_val, lhs.coefficient, lhs.constant, lhs.derivedUnitType);
+        return new derived_unit(lhs.dims, lhs._value - rhs_val, lhs.coefficient, lhs.constant);
     }
 
     operator *(lhs: real, inout rhs: derived_unit): derived_unit {
