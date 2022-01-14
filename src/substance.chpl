@@ -5,15 +5,13 @@ module substance {
         var dims: unit;
         var _value: real;
         var coefficient: real;
-        var constant: real;
-        var substanceType: string;
+        var constant: real;        
         
-        proc init(value: real, coefficient: real, constant: real, substanceType: string) {  
+        proc init(value: real, coefficient: real, constant: real) {  
             this.dims = new unit(0, 0, 0, 0, 0, 1, 0);          
             this._value = value;
             this.coefficient = coefficient;
-            this.constant = constant;
-            this.substanceType = substanceType;
+            this.constant = constant;            
         }
 
         proc value(): real {
@@ -38,21 +36,21 @@ module substance {
     }
 
     proc mole(value: real): substance {
-        return new substance(value, 1, 0, "mole");
+        return new substance(value, 1, 0);
     }
 
     proc millimole(value: real): substance {
-        return new substance(value, 1000, 0, "millimole");
+        return new substance(value, 1000, 0);
     }   
 
     operator +(lhs: substance, rhs: substance): substance {
         var rhs_val = lhs.from_base(rhs.to_base());
-        return new substance(lhs._value + rhs_val, lhs.coefficient, lhs.constant, lhs.substanceType);
+        return new substance(lhs._value + rhs_val, lhs.coefficient, lhs.constant);
     }
 
     operator -(lhs: substance, rhs: substance): substance {
         var rhs_val = lhs.from_base(rhs.to_base());
-        return new substance(lhs._value - rhs_val, lhs.coefficient, lhs.constant, lhs.substanceType);
+        return new substance(lhs._value - rhs_val, lhs.coefficient, lhs.constant);
     }
 
     operator *(lhs: real, inout rhs: substance): substance {

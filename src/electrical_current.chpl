@@ -5,15 +5,13 @@ module electrical_current {
         var dims: unit;
         var _value: real;
         var coefficient: real;
-        var constant: real;
-        var electricCurrentType: string;
+        var constant: real;        
         
-        proc init(value: real, coefficient: real, constant: real, electricCurrentType: string) {  
+        proc init(value: real, coefficient: real, constant: real) {  
             this.dims = new unit(0, 0, 0, 1, 0, 0, 0);          
             this._value = value;
             this.coefficient = coefficient;
-            this.constant = constant;
-            this.electricCurrentType = electricCurrentType;
+            this.constant = constant;            
         }
 
         proc value(): real {
@@ -38,21 +36,21 @@ module electrical_current {
     }
 
     proc ampere(value: real): electrical_current {
-        return new electrical_current(value, 1, 0, "ampere");
+        return new electrical_current(value, 1, 0);
     }
 
     proc kiloampere(value: real): electrical_current {
-        return new electrical_current(value, 0.001, 0, "kiloampere");
+        return new electrical_current(value, 0.001, 0);
     }
     
     operator +(lhs: electrical_current, rhs: electrical_current): electrical_current {
         var rhs_val = lhs.from_base(rhs.to_base());
-        return new electrical_current(lhs._value + rhs_val, lhs.coefficient, lhs.constant, lhs.electrical_currentType);
+        return new electrical_current(lhs._value + rhs_val, lhs.coefficient, lhs.constant);
     }
 
     operator -(lhs: electrical_current, rhs: electrical_current): electrical_current {
         var rhs_val = lhs.from_base(rhs.to_base());
-        return new electrical_current(lhs._value - rhs_val, lhs.coefficient, lhs.constant, lhs.electrical_currentType);
+        return new electrical_current(lhs._value - rhs_val, lhs.coefficient, lhs.constant);
     }
 
     operator *(lhs: real, inout rhs: electrical_current): electrical_current {

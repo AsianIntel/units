@@ -5,15 +5,13 @@ module unit_time {
         var dims: unit;
         var _value: real;
         var coefficient: real;
-        var constant: real;
-        var timeType: string;
+        var constant: real;        
         
-        proc init(value: real, coefficient: real, constant: real, timeType: string) {  
+        proc init(value: real, coefficient: real, constant: real) {  
             this.dims = new unit(0, 0, 1, 0, 0, 0, 0);          
             this._value = value;
             this.coefficient = coefficient;
-            this.constant = constant;
-            this.timeType = timeType;
+            this.constant = constant;            
         }
 
         proc value(): real {
@@ -38,21 +36,21 @@ module unit_time {
     }
 
     proc second(value: real): time {
-        return new time(value, 1, 0, "second");
+        return new time(value, 1, 0);
     }
 
     proc minute(value: real): time {
-        return new time(value, 0.0166666667, 0, "minute");
+        return new time(value, 0.0166666667, 0);
     }   
 
     operator +(lhs: time, rhs: time): time {
         var rhs_val = lhs.from_base(rhs.to_base());
-        return new time(lhs._value + rhs_val, lhs.coefficient, lhs.constant, lhs.timeType);
+        return new time(lhs._value + rhs_val, lhs.coefficient, lhs.constant);
     }
 
     operator -(lhs: time, rhs: time): time {
         var rhs_val = lhs.from_base(rhs.to_base());
-        return new time(lhs._value - rhs_val, lhs.coefficient, lhs.constant, lhs.timeType);
+        return new time(lhs._value - rhs_val, lhs.coefficient, lhs.constant);
     }
 
     operator *(lhs: real, inout rhs: time): time {
