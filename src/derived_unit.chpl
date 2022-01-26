@@ -1,4 +1,4 @@
-module derived_unit {
+module Derived_unit {
     private use unit;
 
     record derived_unit {

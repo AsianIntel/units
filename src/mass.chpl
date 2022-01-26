@@ -1,5 +1,12 @@
-module mass {
+module Mass {
     private use unit;
+    private use Derived_unit;
+    private use Length;
+    private use Unit_time;
+    private use Electrical_current;
+    private use Temperature;
+    private use Substance;
+    private use Luminous_intensity;    
 
     record mass {
         var dims: unit;
@@ -56,6 +63,104 @@ module mass {
     operator *(lhs: real, inout rhs: mass): mass {
         rhs._value = rhs._value * lhs;
         return rhs;
+    }
+
+    operator *(lhs: mass, rhs: length): derived_unit {
+        var lhs_val = lhs.to_base();
+        var rhs_val = rhs.to_base();
+
+        return new derived_unit(lhs.dims + rhs.dims, lhs_val * rhs_val, 1, 0);
+    }
+
+    operator *(lhs: mass, rhs: mass): derived_unit {
+        var lhs_val = lhs.to_base();
+        var rhs_val = rhs.to_base();
+
+        return new derived_unit(lhs.dims + rhs.dims, lhs_val * rhs_val, 1, 0);
+    }
+
+    operator *(lhs: mass, rhs: time): derived_unit {
+        var lhs_val = lhs.to_base();
+        var rhs_val = rhs.to_base();
+
+        return new derived_unit(lhs.dims + rhs.dims, lhs_val * rhs_val, 1, 0);
+    }
+
+    operator *(lhs: mass, rhs: electrical_current): derived_unit {
+        var lhs_val = lhs.to_base();
+        var rhs_val = rhs.to_base();
+
+        return new derived_unit(lhs.dims + rhs.dims, lhs_val * rhs_val, 1, 0);
+    }
+
+    operator *(lhs: mass, rhs: temperature): derived_unit {
+        var lhs_val = lhs.to_base();
+        var rhs_val = rhs.to_base();
+
+        return new derived_unit(lhs.dims + rhs.dims, lhs_val * rhs_val, 1, 0);
+    }
+
+    operator *(lhs: mass, rhs: substance): derived_unit {
+        var lhs_val = lhs.to_base();
+        var rhs_val = rhs.to_base();
+
+        return new derived_unit(lhs.dims + rhs.dims, lhs_val * rhs_val, 1, 0);
+    }
+
+    operator *(lhs: mass, rhs: luminous_intensity): derived_unit {
+        var lhs_val = lhs.to_base();
+        var rhs_val = rhs.to_base();
+
+        return new derived_unit(lhs.dims + rhs.dims, lhs_val * rhs_val, 1, 0);
+    }
+
+    operator /(lhs: mass, rhs: length): derived_unit {
+        var lhs_val = lhs.to_base();
+        var rhs_val = rhs.to_base();
+
+        return new derived_unit(lhs.dims - rhs.dims, lhs_val / rhs_val, 1, 0);
+    }
+
+    operator /(lhs: mass, rhs: mass): derived_unit {
+        var lhs_val = lhs.to_base();
+        var rhs_val = rhs.to_base();
+
+        return new derived_unit(lhs.dims - rhs.dims, lhs_val / rhs_val, 1, 0);
+    }
+
+    operator /(lhs: mass, rhs: time): derived_unit {
+        var lhs_val = lhs.to_base();
+        var rhs_val = rhs.to_base();
+
+        return new derived_unit(lhs.dims - rhs.dims, lhs_val / rhs_val, 1, 0);
+    }
+
+    operator /(lhs: mass, rhs: electrical_current): derived_unit {
+        var lhs_val = lhs.to_base();
+        var rhs_val = rhs.to_base();
+
+        return new derived_unit(lhs.dims - rhs.dims, lhs_val / rhs_val, 1, 0);
+    }
+
+    operator /(lhs: mass, rhs: temperature): derived_unit {
+        var lhs_val = lhs.to_base();
+        var rhs_val = rhs.to_base();
+
+        return new derived_unit(lhs.dims - rhs.dims, lhs_val / rhs_val, 1, 0);
+    }
+
+    operator /(lhs: mass, rhs: substance): derived_unit {
+        var lhs_val = lhs.to_base();
+        var rhs_val = rhs.to_base();
+
+        return new derived_unit(lhs.dims - rhs.dims, lhs_val / rhs_val, 1, 0);
+    }
+
+    operator /(lhs: mass, rhs: luminous_intensity): derived_unit {
+        var lhs_val = lhs.to_base();
+        var rhs_val = rhs.to_base();
+
+        return new derived_unit(lhs.dims - rhs.dims, lhs_val / rhs_val, 1, 0);
     }
 
     operator ==(lhs: mass, rhs: mass): bool {
