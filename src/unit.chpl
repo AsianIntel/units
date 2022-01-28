@@ -56,6 +56,10 @@ module unit {
                 this.substance == other.substance &&
                 this.luminous_intensity == other.luminous_intensity
             );
+        }
+
+        proc writeThis(f) throws {
+            f <~> "{dims = (" <~> this.length <~> ", " <~> this.mass <~> ", " <~> this.time <~> ", " <~> this.electric_current <~> ", " <~> this.temperature <~> ", " <~> this.substance <~> ", " <~> this.luminous_intensity <~> "), coefficient = " <~> this.coefficient <~> ", constant = " <~> this.constant <~> ", value = " <~> this._value <~> "}";
         }                               
     }
 
@@ -74,7 +78,7 @@ module unit {
             lhs._value + rhs_val);
     }
 
-    operator +(lhs: unit, rhs: unit): unit where lhs.checkDims(rhs) {
+    operator -(lhs: unit, rhs: unit): unit where lhs.checkDims(rhs) {
         var rhs_val = lhs.from_base(rhs.to_base());
         return new unit(
             lhs.length,
