@@ -1,7 +1,7 @@
 module Length {
     private use unit;
-
-    proc length(param coefficient: real, param constant: real, value: real): unit {
+    
+    proc length(coefficient: real, constant: real, value: real): unit {
         return new unit(1, 0, 0, 0, 0, 0, 0, coefficient, constant, value);
     }
 
