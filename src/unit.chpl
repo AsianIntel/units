@@ -9,11 +9,11 @@ module unit {
         param temperature: int;
         param substance: int;
         param luminous_intensity: int;
-        param coefficient: real; 
-        param constant: real;
+        const coefficient: real; 
+        const constant: real;
         var _value: real;
 
-        proc init(param Length: int, param Mass: int, param Time: int, param ElectricCurrent: int, param Temperature: int, param Substance: int, param LuminousIntensity: int, param coefficient: real, param constant: real, value: real) {
+        proc init(param Length: int, param Mass: int, param Time: int, param ElectricCurrent: int, param Temperature: int, param Substance: int, param LuminousIntensity: int, coefficient: real, constant: real, value: real) {
             this.length = Length;
             this.mass = Mass;
             this.time = Time;
