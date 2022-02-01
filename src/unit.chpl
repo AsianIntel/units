@@ -12,8 +12,9 @@ module unit {
         const coefficient: real; 
         const constant: real;
         var _value: real;
+        var symbol: string;
 
-        proc init(param Length: int, param Mass: int, param Time: int, param ElectricCurrent: int, param Temperature: int, param Substance: int, param LuminousIntensity: int, coefficient: real, constant: real, value: real) {
+        proc init(param Length: int, param Mass: int, param Time: int, param ElectricCurrent: int, param Temperature: int, param Substance: int, param LuminousIntensity: int, coefficient: real, constant: real, value: real, symbol: string) {
             this.length = Length;
             this.mass = Mass;
             this.time = Time;
@@ -24,6 +25,7 @@ module unit {
             this.coefficient = coefficient;
             this.constant = constant;
             this._value = value;
+            this.symbol = symbol;
         }
 
         proc value(): real {
@@ -59,7 +61,7 @@ module unit {
         }
 
         proc writeThis(f) throws {
-            f <~> "{dims = (" <~> this.length <~> ", " <~> this.mass <~> ", " <~> this.time <~> ", " <~> this.electric_current <~> ", " <~> this.temperature <~> ", " <~> this.substance <~> ", " <~> this.luminous_intensity <~> "), coefficient = " <~> this.coefficient <~> ", constant = " <~> this.constant <~> ", value = " <~> this._value <~> "}";
+            f <~> "{dims = (" <~> this.length <~> ", " <~> this.mass <~> ", " <~> this.time <~> ", " <~> this.electric_current <~> ", " <~> this.temperature <~> ", " <~> this.substance <~> ", " <~> this.luminous_intensity <~> "), coefficient = " <~> this.coefficient <~> ", constant = " <~> this.constant <~> ", value = " <~> this._value <~> ", symbol = " <~> this.symbol <~> "}";
         }                               
     }
 
@@ -75,7 +77,8 @@ module unit {
             lhs.luminous_intensity,
             lhs.coefficient,
             lhs.constant,
-            lhs._value + rhs_val);
+            lhs._value + rhs_val,
+            lhs.symbol);
     }
 
     operator -(lhs: unit, rhs: unit): unit where lhs.checkDims(rhs) {
@@ -90,6 +93,7 @@ module unit {
             lhs.luminous_intensity,
             lhs.coefficient,
             lhs.constant,
-            lhs._value - rhs_val);
+            lhs._value - rhs_val,
+            lhs.symbol);
     }    
 }

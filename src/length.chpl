@@ -1,8 +1,8 @@
 module Length {
     private use unit;
     
-    proc length(coefficient: real, constant: real, value: real): unit {
-        return new unit(1, 0, 0, 0, 0, 0, 0, coefficient, constant, value);
+    proc length(coefficient: real, constant: real, value: real, symbol: string): unit {
+        return new unit(1, 0, 0, 0, 0, 0, 0, coefficient, constant, value, symbol);
     }
 
     // private use Derived_unit;
