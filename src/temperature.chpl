@@ -1,5 +1,10 @@
 module Temperature {
     private use unit;
+    private use Unit_Registry;
+
+    proc temperature(unitObj: shared AbstractUnitObj, constant: real, value: real): unit {
+        return new unit(0, 0, 0, 0, 1, 0, 0, unitObj.getCoefficient(), constant, value, unitObj.getSymbol());
+    }
 
     proc temperature(coefficient: real, constant: real, value: real, symbol: string): unit {
         return new unit(0, 0, 0, 0, 1, 0, 0, coefficient, constant, value, symbol);
