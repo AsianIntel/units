@@ -5,6 +5,10 @@ module Length {
     proc length(unitObj: shared AbstractUnitObj, constant: real, value: real): unit {
         return new unit(1, 0, 0, 0, 0, 0, 0, unitObj.getCoefficient(), constant, value, unitObj.getSymbol());
     }
+
+    proc length(unitObj: shared AbstractUnitObj, value: real): unit {
+        return new unit(1, 0, 0, 0, 0, 0, 0, unitObj.getCoefficient(), unitObj.getConstant(), value, unitObj.getSymbol());
+    }
     
     proc length(coefficient: real, constant: real, value: real, symbol: string): unit {
         return new unit(1, 0, 0, 0, 0, 0, 0, coefficient, constant, value, symbol);
