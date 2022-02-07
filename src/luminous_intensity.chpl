@@ -6,6 +6,10 @@ module Luminous_intensity {
         return new unit(0, 0, 0, 0, 0, 0, 1, unitObj.getCoefficient(), constant, value, unitObj.getSymbol());
     }
 
+    proc luminous_intensity(unitObj: shared AbstractUnitObj, value: real): unit {
+        return new unit(0, 0, 0, 0, 0, 0, 1, unitObj.getCoefficient(), unitObj.getConstant(), value, unitObj.getSymbol());
+    }
+
     proc luminous_intensity(coefficient: real, constant: real, value: real, symbol: string): unit {
         return new unit(0, 0, 0, 0, 0, 0, 1, coefficient, constant, value, symbol);
     }
