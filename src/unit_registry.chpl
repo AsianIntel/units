@@ -5,10 +5,14 @@ module Unit_Registry {
         const unitCoefficient: real;        
 
         proc init(coefficient: real) {
-            this.unitCoefficient = coefficient;            
+            this.unitCoefficient = coefficient;                
         }
 
         proc getCoefficient(): real {
+            halt("Virtual class method");
+        }
+
+        proc getConstant(): real {
             halt("Virtual class method");
         }
 
@@ -19,16 +23,22 @@ module Unit_Registry {
 
     class UnitObj: AbstractUnitObj {
         const unitCoefficient: real;
+        const unitConstant: real;
         var unitSymbol: string;
 
-        proc init(coefficient: real, symbol: string) {
+        proc init(coefficient: real, constant: real, symbol: string) {
             super.init(coefficient);
             this.unitCoefficient = coefficient;
+            this.unitConstant = constant;
             this.unitSymbol = symbol;
         }
 
         override proc getCoefficient(): real {
             return unitCoefficient;
+        }
+
+        override proc getConstant(): real {
+            return unitConstant;
         }
 
         override proc getSymbol(): string {
@@ -92,32 +102,32 @@ module Unit_Registry {
             return this.luminousIntensityUnitDict.getValue(lumIntensityType);            
         }
 
-        proc setLengthType(lengthType: string, lengthCoeff: real, lengthSymbol: string) {
-            this.lengthUnitDict.addOrSet(lengthType, new UnitObj(lengthCoeff, lengthSymbol));
+        proc setLengthType(lengthType: string, lengthCoeff: real, lengthConstant: real, lengthSymbol: string) {
+            this.lengthUnitDict.addOrSet(lengthType, new UnitObj(lengthCoeff, lengthConstant, lengthSymbol));
         }      
 
-        proc setMassType(massType: string, massCoeff: real, massSymbol: string) {
-            this.massUnitDict.addOrSet(massType, new UnitObj(massCoeff, massSymbol));
+        proc setMassType(massType: string, massCoeff: real, massConstant: real, massSymbol: string) {
+            this.massUnitDict.addOrSet(massType, new UnitObj(massCoeff, massConstant, massSymbol));
         }
 
-        proc setTimeType(timeType: string, timeCoeff: real, timeSymbol: string) {
-            this.timeUnitDict.addOrSet(timeType, new UnitObj(timeCoeff, timeSymbol));
+        proc setTimeType(timeType: string, timeCoeff: real, timeConstant: real, timeSymbol: string) {
+            this.timeUnitDict.addOrSet(timeType, new UnitObj(timeCoeff, timeConstant, timeSymbol));
         }  
 
-        proc setEcurrentType(eCurrentType: string, eCurrentCoeff: real, eCurrentSymbol: string) {
-            this.electricalCurrentUnitDict.addOrSet(eCurrentType, new UnitObj(eCurrentCoeff, eCurrentSymbol));
+        proc setEcurrentType(eCurrentType: string, eCurrentCoeff: real, eCurrentConstant: real, eCurrentSymbol: string) {
+            this.electricalCurrentUnitDict.addOrSet(eCurrentType, new UnitObj(eCurrentCoeff, eCurrentConstant, eCurrentSymbol));
         }
 
-        proc setTemperatureType(temperatureType: string, temperatureCoeff: real, temperatureSymbol: string) {
-            this.temperatureUnitDict.addOrSet(temperatureType, new UnitObj(temperatureCoeff, temperatureSymbol));
+        proc setTemperatureType(temperatureType: string, temperatureCoeff: real, temperatureConstant: real, temperatureSymbol: string) {
+            this.temperatureUnitDict.addOrSet(temperatureType, new UnitObj(temperatureCoeff, temperatureConstant, temperatureSymbol));
         }
 
-        proc setSubtanceType(substanceType: string, substanceCoeff: real, substanceSymbol: string) {
-            this.substanceUnitDict.addOrSet(substanceType, new UnitObj(substanceCoeff, substanceSymbol));
+        proc setSubtanceType(substanceType: string, substanceCoeff: real, substanceConstant: real, substanceSymbol: string) {
+            this.substanceUnitDict.addOrSet(substanceType, new UnitObj(substanceCoeff, substanceConstant, substanceSymbol));
         }
 
-        proc setLumIntensityType(lumIntensityType: string, lumIntensityCoeff: real, lumIntensitySymbol: string) {
-            this.luminousIntensityUnitDict(lumIntensityType, new UnitObj(lumIntensityCoeff, lumIntensitySymbol));
+        proc setLumIntensityType(lumIntensityType: string, lumIntensityCoeff: real, lumIntensityConstant: real, lumIntensitySymbol: string) {
+            this.luminousIntensityUnitDict(lumIntensityType, new UnitObj(lumIntensityCoeff, lumIntensityConstant, lumIntensitySymbol));
         }
 
     }
