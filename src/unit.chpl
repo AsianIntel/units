@@ -1,5 +1,6 @@
 module unit {
     private use IO;
+    private use Unit_Registry;
 
     record unit {
         param length: int;
@@ -63,6 +64,62 @@ module unit {
         proc writeThis(f) throws {
             f <~> "{dims = (" <~> this.length <~> ", " <~> this.mass <~> ", " <~> this.time <~> ", " <~> this.electric_current <~> ", " <~> this.temperature <~> ", " <~> this.substance <~> ", " <~> this.luminous_intensity <~> "), coefficient = " <~> this.coefficient <~> ", constant = " <~> this.constant <~> ", value = " <~> this._value <~> ", symbol = " <~> this.symbol <~> "}";
         }                               
+    }
+
+    proc set_unitSystem(systemName: string): unitregistry {
+        if (systemName == "MKS") {
+            lengthRegistry.add("meter", new shared UnitObj(1, 0, "m"));
+            lengthRegistry.add("centimeter", new shared UnitObj(100, 0, "cm"));
+
+            massRegistry.add("kilogram", new shared UnitObj(1, 0, "kg"));
+            massRegistry.add("gram", new shared UnitObj(1000, 0, "g"));
+
+            timeRegistry.add("second", new shared UnitObj(1, 0, "s"));
+            timeRegistry.add("minute", new shared UnitObj(0.0166666667, 0, "min"));
+
+            electricalCurrentRegistry.add("ampere", new shared UnitObj(1, 0, "A"));
+            electricalCurrentRegistry.add("kiloampere", new shared UnitObj(0.001, 0, "kA"));
+
+            temperatureRegistry.add("kelvin", new shared UnitObj(1, 0, "K"));
+            temperatureRegistry.add("celsius", new shared UnitObj(1, -273.15, "C"));
+            temperatureRegistry.add("fahrenheit", new shared UnitObj(9.0/5.0, -459.67, "F"));
+
+            substanceRegistry.add("mole", new shared UnitObj(1, 0, "mol"));
+            substanceRegistry.add("millimole", new shared UnitObj(1000, 0, "mmol"));
+
+            luminousIntensityRegistry.add("candela", new shared UnitObj(1, 0, "cd"));
+            luminousIntensityRegistry.add("kilocandela", new shared UnitObj(0.001, 0, "kcd"));
+
+            return new unitregistry(lengthRegistry, massRegistry, timeRegistry, electricalCurrentRegistry, temperatureRegistry, substanceRegistry, luminousIntensityRegistry);
+
+        } else if (systemName == "CGS") {
+            lengthRegistry.add("meter", new shared UnitObj(0.01, 0, "m"));
+            lengthRegistry.add("centimeter", new shared UnitObj(1, 0, "cm"));
+
+            massRegistry.add("kilogram", new shared UnitObj(0.001, 0, "kg"));
+            massRegistry.add("gram", new shared UnitObj(1, 0, "g"));
+
+            timeRegistry.add("second", new shared UnitObj(1, 0, "s"));
+            timeRegistry.add("minute", new shared UnitObj(0.0166666667, 0, "min"));
+
+            electricalCurrentRegistry.add("ampere", new shared UnitObj(3.33564e-10, 0, "A"));
+            electricalCurrentRegistry.add("statampere", new shared UnitObj(1, 0, "statA"));
+
+            temperatureRegistry.add("kelvin", new shared UnitObj(1, 0, "K"));
+            temperatureRegistry.add("celsius", new shared UnitObj(1, -273.15, "C"));
+            temperatureRegistry.add("fahrenheit", new shared UnitObj(9.0/5.0, -459.67, "F"));
+
+            substanceRegistry.add("mole", new shared UnitObj(1, 0, "mol"));
+            substanceRegistry.add("millimole", new shared UnitObj(1000, 0, "mmol"));
+
+            luminousIntensityRegistry.add("candela", new shared UnitObj(1, 0, "cd"));
+            luminousIntensityRegistry.add("kilocandela", new shared UnitObj(0.001, 0, "kcd"));
+
+            return new unitregistry(lengthRegistry, massRegistry, timeRegistry, electricalCurrentRegistry, temperatureRegistry, substanceRegistry, luminousIntensityRegistry);
+
+        } else {
+            halt("Sorry some undefined UnitSystem!!");
+        }
     }
 
     operator +(lhs: unit, rhs: unit): unit where lhs.checkDims(rhs) {
