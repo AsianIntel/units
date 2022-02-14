@@ -153,4 +153,64 @@ module unit {
             lhs._value - rhs_val,
             lhs.symbol);
     }    
+
+    operator ==(lhs: unit, rhs: unit): bool where lhs.checkDims(rhs) {
+        var rhs_val = lhs.from_base(rhs.to_base());
+        return lhs._value == rhs_val;
+    }
+
+    operator !=(lhs: unit, rhs: unit): bool where lhs.checkDims(rhs) {
+        return !(lhs == rhs);
+    }
+
+    operator *(lhs: real, rhs: unit): unit {        
+        return new unit(
+            rhs.length,
+            rhs.mass,
+            rhs.time,
+            rhs.electric_current,
+            rhs.temperature,
+            rhs.substance,
+            rhs.luminous_intensity,
+            rhs.coefficient,
+            rhs.constant,
+            rhs._value * lhs,
+            rhs.symbol);
+    }
+
+    operator *(lhs: unit, rhs: unit): unit {
+        var lhs_val = lhs.to_base();
+        var rhs_val = rhs.to_base();
+
+        return new unit(
+            lhs.length + rhs.length,
+            lhs.mass + rhs.mass,
+            lhs.time + rhs.time,
+            lhs.electric_current + rhs.electric_current,
+            lhs.temperature + rhs.temperature,
+            lhs.substance + rhs.substance,
+            lhs.luminous_intensity + rhs.luminous_intensity,
+            1,
+            0,
+            lhs_val * rhs_val,
+            "derived_unit");
+    }
+
+    operator /(lhs: unit, rhs: unit): unit {
+        var lhs_val = lhs.to_base();
+        var rhs_val = rhs.to_base();
+
+        return new unit(
+            lhs.length - rhs.length,
+            lhs.mass - rhs.mass,
+            lhs.time - rhs.time,
+            lhs.electric_current - rhs.electric_current,
+            lhs.temperature - rhs.temperature,
+            lhs.substance - rhs.substance,
+            lhs.luminous_intensity - rhs.luminous_intensity,
+            1,
+            0,
+            lhs_val / rhs_val,
+            "derived_unit");
+    }
 }
