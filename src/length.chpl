@@ -12,5 +12,13 @@ module Length {
     
     proc length(coefficient: real, constant: real, in arr, value: real, symbol: string): unit {
         return new unit(1, 0, 0, 0, 0, 0, 0, coefficient, constant, arr, value, symbol);
-    }        
+    }   
+
+    proc length(unitObj: shared AbstractUnitObj, size: domain, in defaultValue, value: real): unit {
+        return new unit(1, 0, 0, 0, 0, 0, 0, unitObj.getCoefficient(), unitObj.getConstant(), size, defaultValue, value, unitObj.getSymbol());
+    }   
+
+    proc length(coefficient: real, constant: real, size: domain, in defaultValue, value: real, symbol: string): unit {
+        return new unit(1, 0, 0, 0, 0, 0, 0, coefficient, constant, size, defaultValue, value, symbol);
+    }  
 }
