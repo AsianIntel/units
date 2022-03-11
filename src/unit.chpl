@@ -31,7 +31,7 @@ module unit {
             this.luminous_intensity = LuminousIntensity;
             this.coefficient = coefficient;
             this.constant = constant;
-            this.eltType = arr.eltType;
+            this.eltType = real;
             this.rank = arr.domain.rank;
             this.stridable = arr.domain.stridable;
             this.dom = arr.domain;
@@ -50,7 +50,7 @@ module unit {
             this.luminous_intensity = LuminousIntensity;
             this.coefficient = coefficient;
             this.constant = constant;
-            this.eltType = defaultValue.type;
+            this.eltType = real;
             this.rank = size.rank;
             this.stridable = size.stridable;
             this.dom = size;
