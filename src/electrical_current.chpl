@@ -12,5 +12,13 @@ module Electrical_current {
 
     proc electrical_current(coefficient: real, constant: real, in arr, value: real, symbol: string): unit {
         return new unit(0, 0, 0, 1, 0, 0, 0, coefficient, constant, arr, value, symbol);
-    }    
+    } 
+
+    proc electrical_current(unitObj: shared AbstractUnitObj, size: domain, in defaultValue, value: real): unit {
+        return new unit(0, 0, 0, 1, 0, 0, 0, unitObj.getCoefficient(), unitObj.getConstant(), size, defaultValue, value, unitObj.getSymbol());
+    }   
+
+    proc electrical_current(coefficient: real, constant: real, size: domain, in defaultValue, value: real, symbol: string): unit {
+        return new unit(0, 0, 0, 1, 0, 0, 0, coefficient, constant, size, defaultValue, value, symbol);
+    }
 }
