@@ -1,4 +1,4 @@
-module Unit_Registry {
+module unit_registry {
     private use Map;
     
     class AbstractUnitObj {
