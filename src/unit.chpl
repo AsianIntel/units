@@ -1,6 +1,6 @@
 module unit {
     private use IO;
-    private use Unit_Registry;
+    private use unit_registry;
 
     record unit {
         param length: int;
@@ -10,58 +10,11 @@ module unit {
         param temperature: int;
         param substance: int;
         param luminous_intensity: int;
-        const coefficient: real; 
-        const constant: real;
-        //testing
-        type eltType;
-        param rank: int;
-        param stridable: bool;
-        var dom: domain(rank, stridable = stridable);
-        var arr: [dom] eltType;
+        param coefficient: real; 
+        param constant: real;
+
         var _value: real;
         var symbol: string;
-
-        proc init(param Length: int, param Mass: int, param Time: int, param ElectricCurrent: int, param Temperature: int, param Substance: int, param LuminousIntensity: int, coefficient: real, constant: real, in arr, value: real, symbol: string) {
-            this.length = Length;
-            this.mass = Mass;
-            this.time = Time;
-            this.electric_current = ElectricCurrent;
-            this.temperature = Temperature;
-            this.substance = Substance;
-            this.luminous_intensity = LuminousIntensity;
-            this.coefficient = coefficient;
-            this.constant = constant;
-            this.eltType = real;
-            this.rank = arr.domain.rank;
-            this.stridable = arr.domain.stridable;
-            this.dom = arr.domain;
-            this.arr = arr;            
-            this._value = value;
-            this.symbol = symbol;
-        }
-
-        proc init(param Length: int, param Mass: int, param Time: int, param ElectricCurrent: int, param Temperature: int, param Substance: int, param LuminousIntensity: int, coefficient: real, constant: real, size: domain, in defaultValue, value: real, symbol: string) {
-            this.length = Length;
-            this.mass = Mass;
-            this.time = Time;
-            this.electric_current = ElectricCurrent;
-            this.temperature = Temperature;
-            this.substance = Substance;
-            this.luminous_intensity = LuminousIntensity;
-            this.coefficient = coefficient;
-            this.constant = constant;
-            this.eltType = real;
-            this.rank = size.rank;
-            this.stridable = size.stridable;
-            this.dom = size;
-            
-            var arr: [size] eltType = defaultValue;
-            this.arr = arr;
-
-            this._value = value;
-            this.symbol = symbol;
-
-        }
 
         proc value(): real {
             return _value;
@@ -73,11 +26,7 @@ module unit {
 
         proc getConstant(): real {
             return constant;
-        }        
-
-        proc getArray() {
-            return arr;
-        }
+        }   
 
         proc from_base(val: real): real {
             return coefficient * val + constant;
@@ -124,6 +73,56 @@ module unit {
         proc writeThis(f) throws {
             f <~> "{dims = (" <~> this.length <~> ", " <~> this.mass <~> ", " <~> this.time <~> ", " <~> this.electric_current <~> ", " <~> this.temperature <~> ", " <~> this.substance <~> ", " <~> this.luminous_intensity <~> "), coefficient = " <~> this.coefficient <~> ", constant = " <~> this.constant <~> ", array = [" <~> this.arr <~> "]" <~> ", value = " <~> this._value <~> ", symbol = " <~> this.symbol <~> "}";
         }                               
+    }
+
+    record unit_array {
+        param length: int;
+        param mass: int;
+        param time: int;
+        param electric_current: int;
+        param temperature: int;
+        param substance: int;
+        param luminous_intensity: int;
+        const coefficient: real; 
+        const constant: real;
+        //testing
+        type eltType;
+        param rank: int;
+        param stridable: bool;
+        var dom: domain(rank, stridable = stridable);
+        var arr: [dom] eltType;
+
+        proc getArray(): real {
+            return arr;
+        }
+
+        proc getCoefficient(): real {
+            return coefficient;
+        }
+
+        proc getConstant(): real {
+            return constant;
+        }   
+
+        proc from_base(val: real): real {
+            return coefficient * val + constant;
+        }
+
+        proc to_base(val: real): real {
+            return (val - constant) / coefficient;
+        }
+
+        proc checkDims(other: unit_array) param {
+            return (
+                this.length == other.length &&
+                this.mass == other.mass &&
+                this.time == other.time &&
+                this.electric_current == other.electric_current &&
+                this.temperature == other.temperature &&
+                this.substance == other.substance &&
+                this.luminous_intensity == other.luminous_intensity
+            );
+        }
     }
 
     proc set_unitSystem(systemName: string): unitregistry {
@@ -182,16 +181,33 @@ module unit {
         }
     }
 
-    operator +(lhs: unit, rhs: unit): unit where lhs.rank == rhs.rank && lhs.checkDims(rhs) {
+    operator +(lhs: unit, rhs: unit): owned unit {
         var rhs_val = lhs.from_base(rhs.to_base());
-        var rhstoBaseVal: rhs.eltType;
+        return new unit(
+            lhs.length,
+            lhs.mass,
+            lhs.time,
+            lhs.electric_current,
+            lhs.temperature,
+            lhs.substance,
+            lhs.luminous_intensity,           
+            lhs.coefficient,
+            lhs.constant,    
+            lhs.coefficient, 
+            lhs.constant,
+            lhs._value + rhs_val,
+            lhs.symbol
+        );
+    }
+
+    operator +(lhs: unit_array, rhs: unit_array): unit_array where lhs.rank == rhs.rank && lhs.checkDims(rhs) {
         var rhsArr = rhs.getArray();        
         for i in rhsArr.domain {
-            rhstoBaseVal = (rhsArr[i] - rhs.constant)/rhs.coefficient;
-            rhsArr[i] = lhs.from_base(rhstoBaseVal);
+            var rhs_val = lhs.from_base(rhs.to_base(rhs.arr[i]));
+            rhsArr[i] = rhs_val;
         }
         
-        return new unit(
+        return new unit_array(
             lhs.length,
             lhs.mass,
             lhs.time,
@@ -202,20 +218,36 @@ module unit {
             lhs.coefficient,
             lhs.constant,            
             lhs.arr + rhsArr,
-            lhs._value + rhs_val,
             lhs.symbol);
     }
 
-    operator -(lhs: unit, rhs: unit): unit where lhs.rank == rhs.rank && lhs.checkDims(rhs) {
+    operator -(lhs: unit, rhs: unit): owned unit {
         var rhs_val = lhs.from_base(rhs.to_base());
-        var rhstoBaseVal: rhs.eltType;
+        return new unit(
+            lhs.length,
+            lhs.mass,
+            lhs.time,
+            lhs.electric_current,
+            lhs.temperature,
+            lhs.substance,
+            lhs.luminous_intensity,           
+            lhs.coefficient,
+            lhs.constant,    
+            lhs.coefficient, 
+            lhs.constant,
+            lhs._value - rhs_val,
+            lhs.symbol
+        );
+    }
+
+    operator -(lhs: unit_array, rhs: unit_array): unit_array where lhs.rank == rhs.rank && lhs.checkDims(rhs) {
         var rhsArr = rhs.getArray();        
         for i in rhsArr.domain {
-            rhstoBaseVal = (rhsArr[i] - rhs.constant)/rhs.coefficient;
-            rhsArr[i] = lhs.from_base(rhstoBaseVal);
+            var rhs_val = lhs.from_base(rhs.to_base(rhs.arr[i]));
+            rhsArr[i] = rhs_val;
         }
         
-        return new unit(
+        return new unit_array(
             lhs.length,
             lhs.mass,
             lhs.time,
@@ -226,27 +258,51 @@ module unit {
             lhs.coefficient,
             lhs.constant,            
             lhs.arr - rhsArr,
-            lhs._value - rhs_val,
-            lhs.symbol);
-    }    
+            lhs.symbol
+        );
+    }  
 
     operator ==(lhs: unit, rhs: unit): bool where lhs.checkDims(rhs) {
         var rhs_val = lhs.from_base(rhs.to_base());
-        var rhsArr = rhs.getArray();
-        var lhsArr = lhs.getArray();
-        var valEqual = lhs._value == rhs_val;
-        var arrEqual = lhsArr.equals(rhsArr);
-        return arrEqual && valEqual;
-    }
+        return lhs._value == rhs_val;
+    }  
 
-    
+    operator ==(lhs: unit_array, rhs: unit_array): bool where lhs.checkDims(rhs) {
+        var rhsArr = rhs.getArray();        
+        for i in rhsArr.domain {
+            var rhs_val = lhs.from_base(rhs.to_base(rhs.arr[i]));
+            rhsArr[i] = rhs_val;
+        }
+        
+        return lhs.arr == rhsArr;
+    }
 
     operator !=(lhs: unit, rhs: unit): bool where lhs.checkDims(rhs) {
         return !(lhs == rhs);
     }
 
-    operator *(lhs: real, rhs: unit): unit {        
-        return new unit(
+    operator !=(lhs: unit_array, rhs: unit_array): bool where lhs.checkDims(rhs) {
+        return !(lhs == rhs);
+    }
+
+    operator *(lhs: real, rhs: unit): unit_array {        
+        return new unit_array(
+            rhs.length,
+            rhs.mass,
+            rhs.time,
+            rhs.electric_current,
+            rhs.temperature,
+            rhs.substance,
+            rhs.luminous_intensity,
+            rhs.coefficient,
+            rhs.constant,
+            lhs * rhs._value,
+            rhs.symbol
+        );
+    }
+
+    operator *(lhs: real, rhs: unit_array): unit_array {        
+        return new unit_array(
             rhs.length,
             rhs.mass,
             rhs.time,
@@ -257,21 +313,37 @@ module unit {
             rhs.coefficient,
             rhs.constant,
             lhs * rhs.arr,
-            rhs._value * lhs,
-            rhs.symbol);
+            rhs.symbol
+        );
     }
 
-    operator *(lhs: unit, rhs: unit): unit where lhs.rank == rhs.rank {
-        var lhs_val = lhs.to_base();
-        var rhs_val = rhs.to_base();
-        var lhsArr = lhs.getArray();
-        var rhsArr = rhs.getArray();
-        for (i, j) in zip(lhsArr.domain, rhsArr.domain) {
-            lhsArr[i] = (lhsArr[i] - lhs.constant)/lhs.coefficient;
-            rhsArr[i] = (rhsArr[i] - rhs.constant)/rhs.coefficient;
+    operator *(lhs: unit, rhs: unit): owned unit {
+        var rhs_val = lhs.from_base(rhs.to_base());
+        return new unit(
+            lhs.length,
+            lhs.mass,
+            lhs.time,
+            lhs.electric_current,
+            lhs.temperature,
+            lhs.substance,
+            lhs.luminous_intensity,           
+            lhs.coefficient,
+            lhs.constant,    
+            lhs.coefficient, 
+            lhs.constant,
+            lhs._value * rhs_val,
+            lhs.symbol
+        );
+    }
+
+    operator *(lhs: unit_array, rhs: unit_array): unit_array where lhs.rank == rhs.rank {
+        var rhsArr = rhs.getArray();        
+        for i in rhsArr.domain {
+            var rhs_val = lhs.from_base(rhs.to_base(rhs.arr[i]));
+            rhsArr[i] = rhs_val;
         }
 
-        return new unit(
+        return new unit_array(
             lhs.length + rhs.length,
             lhs.mass + rhs.mass,
             lhs.time + rhs.time,
@@ -281,12 +353,12 @@ module unit {
             lhs.luminous_intensity + rhs.luminous_intensity,
             1,
             0,
-            lhsArr * rhsArr,
-            lhs_val * rhs_val,
-            "derived_unit");
+            lhs.arr * rhsArr,
+            "derived_unit"
+        );
     }
 
-    operator /(lhs: unit, rhs: unit): unit where lhs.rank == rhs.rank && lhs.checkDims(rhs) {
+    operator /(lhs: unit_array, rhs: unit_array): unit where lhs.rank == rhs.rank && lhs.checkDims(rhs) {
         var lhs_val = lhs.to_base();
         var rhs_val = rhs.to_base();
         var lhsArr = lhs.getArray();
@@ -296,7 +368,7 @@ module unit {
             rhsArr[i] = (rhsArr[i] - rhs.constant)/rhs.coefficient;
         }
 
-        return new unit(
+        return new unit_array(
             lhs.length - rhs.length,
             lhs.mass - rhs.mass,
             lhs.time - rhs.time,
@@ -311,7 +383,7 @@ module unit {
             "dimensionless");
     }
 
-    operator /(lhs: unit, rhs: unit): unit {
+    operator /(lhs: unit_array, rhs: unit_array): unit_array {
         var lhs_val = lhs.to_base();
         var rhs_val = rhs.to_base();
         var lhsArr = lhs.getArray();
@@ -321,7 +393,7 @@ module unit {
             rhsArr[i] = (rhsArr[i] - rhs.constant)/rhs.coefficient;
         }
 
-        return new unit(
+        return new unit_array(
             lhs.length - rhs.length,
             lhs.mass - rhs.mass,
             lhs.time - rhs.time,
