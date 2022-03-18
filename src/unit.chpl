@@ -358,53 +358,35 @@ module unit {
         );
     }
 
-    operator /(lhs: unit_array, rhs: unit_array): unit where lhs.rank == rhs.rank && lhs.checkDims(rhs) {
-        var lhs_val = lhs.to_base();
-        var rhs_val = rhs.to_base();
-        var lhsArr = lhs.getArray();
-        var rhsArr = rhs.getArray();
-        for(i, j) in zip(lhsArr.domain, rhsArr.domain) {
-            lhsArr[i] = (lhsArr[i] - lhs.constant)/lhs.coefficient;
-            rhsArr[i] = (rhsArr[i] - rhs.constant)/rhs.coefficient;
-        }
-
+    operator /(lhs: unit, rhs: real): unit_array {        
         return new unit_array(
-            lhs.length - rhs.length,
-            lhs.mass - rhs.mass,
-            lhs.time - rhs.time,
-            lhs.electric_current - rhs.electric_current,
-            lhs.temperature - rhs.temperature,
-            lhs.substance - rhs.substance,
-            lhs.luminous_intensity - rhs.luminous_intensity,
-            1,
-            0,
-            lhsArr/rhsArr,
-            lhs_val / rhs_val,
-            "dimensionless");
+            lhs.length,
+            lhs.mass,
+            lhs.time,
+            lhs.electric_current,
+            lhs.temperature,
+            lhs.substance,
+            lhs.luminous_intensity,
+            lhs.coefficient,
+            lhs.constant,
+            lhs._value / rhs,
+            lhs.symbol
+        );
     }
 
-    operator /(lhs: unit_array, rhs: unit_array): unit_array {
-        var lhs_val = lhs.to_base();
-        var rhs_val = rhs.to_base();
-        var lhsArr = lhs.getArray();
-        var rhsArr = rhs.getArray();
-        for(i, j) in zip(lhsArr.domain, rhsArr.domain) {
-            lhsArr[i] = (lhsArr[i] - lhs.constant)/lhs.coefficient;
-            rhsArr[i] = (rhsArr[i] - rhs.constant)/rhs.coefficient;
-        }
-
+    operator /(lhs: unit_array, rhs: real): unit_array {        
         return new unit_array(
-            lhs.length - rhs.length,
-            lhs.mass - rhs.mass,
-            lhs.time - rhs.time,
-            lhs.electric_current - rhs.electric_current,
-            lhs.temperature - rhs.temperature,
-            lhs.substance - rhs.substance,
-            lhs.luminous_intensity - rhs.luminous_intensity,
-            1,
-            0,
-            lhsArr/rhsArr,
-            lhs_val / rhs_val,
-            "derived_unit");
+            lhs.length,
+            lhs.mass,
+            lhs.time,
+            lhs.electric_current,
+            lhs.temperature,
+            lhs.substance,
+            lhs.luminous_intensity,
+            lhs.coefficient,
+            lhs.constant,
+            lhs.arr / rhs,
+            lhs.symbol
+        );
     }
 }
