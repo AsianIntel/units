@@ -49,12 +49,12 @@ module unit {
         }
 
         proc convert_to(unitObj: shared AbstractUnitObj): unit {
-            var unit_val = unitObj.getCoefficient() * this._value + unitObj.getConstant();            
+            var unit_val = unitObj.getCoefficient() * this._value + unitObj.getConstant();  
             var unitArr = this.getArray();
             for i in unitArr.domain {
                 unitArr[i] = unitObj.getCoefficient() * unitArr[i] + unitObj.getConstant();
-            }
-
+            }           
+            
             return new unit(
                 this.length,
                 this.mass,
@@ -71,7 +71,7 @@ module unit {
         }
 
         proc writeThis(f) throws {
-            f <~> "{dims = (" <~> this.length <~> ", " <~> this.mass <~> ", " <~> this.time <~> ", " <~> this.electric_current <~> ", " <~> this.temperature <~> ", " <~> this.substance <~> ", " <~> this.luminous_intensity <~> "), coefficient = " <~> this.coefficient <~> ", constant = " <~> this.constant <~> ", array = [" <~> this.arr <~> "]" <~> ", value = " <~> this._value <~> ", symbol = " <~> this.symbol <~> "}";
+            f <~> "{dims = (" <~> this.length <~> ", " <~> this.mass <~> ", " <~> this.time <~> ", " <~> this.electric_current <~> ", " <~> this.temperature <~> ", " <~> this.substance <~> ", " <~> this.luminous_intensity <~> "), coefficient = " <~> this.coefficient <~> ", constant = " <~> this.constant <~> ", value = " <~> this._value <~> ", symbol = " <~> this.symbol <~> "}";
         }                               
     }
 
@@ -91,6 +91,8 @@ module unit {
         param stridable: bool;
         var dom: domain(rank, stridable = stridable);
         var arr: [dom] eltType;
+        var symbol: string;
+        
 
         proc getArray(): real {
             return arr;
@@ -122,6 +124,10 @@ module unit {
                 this.substance == other.substance &&
                 this.luminous_intensity == other.luminous_intensity
             );
+        }       
+
+        proc writeThis(f) throws {
+            f <~> "{dims = (" <~> this.length <~> ", " <~> this.mass <~> ", " <~> this.time <~> ", " <~> this.electric_current <~> ", " <~> this.temperature <~> ", " <~> this.substance <~> ", " <~> this.luminous_intensity <~> "), coefficient = " <~> this.coefficient <~> ", constant = " <~> this.constant <~> ", array = [" <~> this.arr <~> "]" <~> ", symbol = " <~> this.symbol <~> "}";
         }
     }
 
@@ -218,7 +224,8 @@ module unit {
             lhs.coefficient,
             lhs.constant,            
             lhs.arr + rhsArr,
-            lhs.symbol);
+            lhs.symbol
+        );
     }
 
     operator -(lhs: unit, rhs: unit): owned unit {
