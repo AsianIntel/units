@@ -49,11 +49,7 @@ module unit {
         }
 
         proc convert_to(unitObj: shared AbstractUnitObj): unit {
-            var unit_val = unitObj.getCoefficient() * this._value + unitObj.getConstant();  
-            var unitArr = this.getArray();
-            for i in unitArr.domain {
-                unitArr[i] = unitObj.getCoefficient() * unitArr[i] + unitObj.getConstant();
-            }           
+            var unit_val = unitObj.getCoefficient() * this._value + unitObj.getConstant();                   
             
             return new unit(
                 this.length,
@@ -64,8 +60,7 @@ module unit {
                 this.substance,
                 this.luminous_intensity,
                 unitObj.getCoefficient(),
-                unitObj.getConstant(),
-                unitArr,
+                unitObj.getConstant(),                
                 unit_val,
                 unitObj.getSymbol());
         }
@@ -92,6 +87,25 @@ module unit {
         var dom: domain(rank, stridable = stridable);
         var arr: [dom] eltType;
         var symbol: string;
+
+        proc init(param Length: int, param Mass: int, param Time: int, param ElectricCurrent: int, param Temperature: int, param Substance: int, param LuminousIntensity: int, coefficient: real, constant: real, in arr, symbol: string) {
+            this.length = Length;
+            this.mass = Mass;
+            this.time = Time;
+            this.electric_current = ElectricCurrent;
+            this.temperature = Temperature;
+            this.substance = Substance;
+            this.luminous_intensity = LuminousIntensity;
+            this.coefficient = coefficient;
+            this.constant = constant;
+            this.eltType = real;
+            this.rank = arr.domain.rank;
+            this.stridable = arr.domain.stridable;
+            this.dom = arr.domain;
+            this.arr = arr;   
+            this.symbol = symbol;
+        }
+
         
 
         proc getArray(): real {
@@ -124,7 +138,27 @@ module unit {
                 this.substance == other.substance &&
                 this.luminous_intensity == other.luminous_intensity
             );
-        }       
+        }     
+
+        proc convert_to(unitObj: shared AbstractUnitObj): unit_array {                       
+            var unitArr = this.getArray();
+            for i in unitArr.domain {
+                unitArr[i] = unitObj.getCoefficient() * unitArr[i] + unitObj.getConstant();
+            }
+
+            return new unit(
+                this.length,
+                this.mass,
+                this.time,
+                this.electric_current,
+                this.temperature,
+                this.substance,
+                this.luminous_intensity,
+                unitObj.getCoefficient(),
+                unitObj.getConstant(),
+                unitArr,
+                unitObj.getSymbol());
+        }  
 
         proc writeThis(f) throws {
             f <~> "{dims = (" <~> this.length <~> ", " <~> this.mass <~> ", " <~> this.time <~> ", " <~> this.electric_current <~> ", " <~> this.temperature <~> ", " <~> this.substance <~> ", " <~> this.luminous_intensity <~> "), coefficient = " <~> this.coefficient <~> ", constant = " <~> this.constant <~> ", array = [" <~> this.arr <~> "]" <~> ", symbol = " <~> this.symbol <~> "}";
