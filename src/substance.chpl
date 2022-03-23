@@ -1,6 +1,6 @@
 module Substance {
     private use unit;
-    private use Unit_Registry;
+    private use unit_registry;
 
     proc substance(unitObj: shared AbstractUnitObj, in arr): unit_array {
         return new unit_array(0, 0, 0, 0, 0, 1, 0, unitObj.getCoefficient(), unitObj.getConstant(), arr, unitObj.getSymbol());
