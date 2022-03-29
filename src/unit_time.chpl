@@ -1,4 +1,4 @@
-module Unit_time {
+module unit_time {
     private use unit;
     private use unit_registry;
 

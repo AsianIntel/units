@@ -1,4 +1,4 @@
-module Mass {
+module mass {
     private use unit;
     private use unit_registry;
 
