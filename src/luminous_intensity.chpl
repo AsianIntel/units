@@ -1,4 +1,4 @@
-module Luminous_intensity {
+module luminous_intensity {
     private use unit;
     private use unit_registry;
 

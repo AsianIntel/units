@@ -1,4 +1,4 @@
-module Substance {
+module substance {
     private use unit;
     private use unit_registry;
 

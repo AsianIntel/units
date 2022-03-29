@@ -1,4 +1,4 @@
-module Length {
+module length {
     private use unit;
     private use unit_registry;
 
