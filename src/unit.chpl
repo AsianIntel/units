@@ -221,7 +221,7 @@ module unit {
         }
     }
 
-    operator +(lhs: unit, rhs: unit): owned unit {
+    operator +(lhs: unit, rhs: unit): unit {
         var rhs_val = lhs.from_base(rhs.to_base());
         return new unit(
             lhs.length,
@@ -232,8 +232,6 @@ module unit {
             lhs.substance,
             lhs.luminous_intensity,           
             lhs.coefficient,
-            lhs.constant,    
-            lhs.coefficient, 
             lhs.constant,
             lhs._value + rhs_val,
             lhs.symbol
