@@ -10,8 +10,8 @@ module unit {
         param temperature: int;
         param substance: int;
         param luminous_intensity: int;
-        param coefficient: real; 
-        param constant: real;
+        const coefficient: real; 
+        const constant: real;
 
         var _value: real;
         var symbol: string;
