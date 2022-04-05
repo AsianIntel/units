@@ -260,7 +260,7 @@ module unit {
         );
     }
 
-    operator -(lhs: unit, rhs: unit): owned unit {
+    operator -(lhs: unit, rhs: unit): unit {
         var rhs_val = lhs.from_base(rhs.to_base());
         return new unit(
             lhs.length,
@@ -354,7 +354,7 @@ module unit {
         );
     }
 
-    operator *(lhs: unit, rhs: unit): owned unit {
+    operator *(lhs: unit, rhs: unit): unit {
         var rhs_val = lhs.from_base(rhs.to_base());
         return new unit(
             lhs.length,
