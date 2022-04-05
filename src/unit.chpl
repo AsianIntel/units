@@ -271,8 +271,6 @@ module unit {
             lhs.substance,
             lhs.luminous_intensity,           
             lhs.coefficient,
-            lhs.constant,    
-            lhs.coefficient, 
             lhs.constant,
             lhs._value - rhs_val,
             lhs.symbol
@@ -367,8 +365,6 @@ module unit {
             lhs.substance,
             lhs.luminous_intensity,           
             lhs.coefficient,
-            lhs.constant,    
-            lhs.coefficient, 
             lhs.constant,
             lhs._value * rhs_val,
             lhs.symbol
