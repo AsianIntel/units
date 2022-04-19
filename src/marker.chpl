@@ -1,13 +1,13 @@
 module marker {
     record UnitMarker {
-        param length: int;
-        param mass: int;
-        param time: int;
-        param electric_current: int;
-        param temperature: int;
-        param substance: int;
-        param luminous_intensity: int;
-        param coefficient: real; 
-        param constant: real;
+        const length: int;
+        const mass: int;
+        const time: int;
+        const electric_current: int;
+        const temperature: int;
+        const substance: int;
+        const luminous_intensity: int;
+        const coefficient: real; 
+        const constant: real;
     }
 }
