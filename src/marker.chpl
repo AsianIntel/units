@@ -9,5 +9,6 @@ module marker {
         const luminous_intensity: int;
         const coefficient: real; 
         const constant: real;
-    }
+        const symbol: string;
+    }    
 }
