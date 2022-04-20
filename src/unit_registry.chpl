@@ -74,31 +74,31 @@ module unit_registry {
             this.luminousIntensityUnitDict = lumIntensityDict;
         }
 
-        proc getLengthType(lengthType: string) {
+        proc getLengthType(lengthType: string) throws {
             return this.lengthUnitDict.getValue(lengthType);            
         }  
 
-        proc getMassType(massType: string) {
+        proc getMassType(massType: string) throws {
             return this.massUnitDict.getValue(massType);            
         }
 
-        proc getTimeType(timeType: string) {
+        proc getTimeType(timeType: string) throws {
             return this.timeUnitDict.getValue(timeType);            
         }
 
-        proc getECurrentType(eCurrentType: string) {
+        proc getECurrentType(eCurrentType: string) throws {
             return this.electricalCurrentUnitDict.getValue(eCurrentType);            
         }
 
-        proc getTemperatureType(temperatureType: string) {
+        proc getTemperatureType(temperatureType: string) throws {
             return this.temperatureUnitDict.getValue(temperatureType);            
         }
 
-        proc getSubstanceType(substanceType: string) {
+        proc getSubstanceType(substanceType: string) throws {
             return this.substanceUnitDict.getValue(substanceType);            
         }
 
-        proc getLumIntensityType(lumIntensityType: string) {
+        proc getLumIntensityType(lumIntensityType: string) throws {
             return this.luminousIntensityUnitDict.getValue(lumIntensityType);            
         }
 
