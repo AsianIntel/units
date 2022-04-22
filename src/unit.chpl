@@ -48,6 +48,23 @@ module unit {
             );
         }
 
+        proc convert_to(unitCoefficient: real, unitConstant: real, unitSymbol: string): unit {
+            var unit_val = unitCoefficient * this._value + unitConstant;
+
+            return new unit(
+                this.length,
+                this.mass,
+                this.time,
+                this.electric_current,
+                this.temperature,
+                this.substance,
+                this.luminous_intensity,
+                unitCoefficient,
+                unitConstant,
+                unit_val,
+                unitSymbol);
+        }
+
         proc convert_to(unitObj: shared AbstractUnitObj): unit {
             var unit_val = unitObj.getCoefficient() * this._value + unitObj.getConstant();                   
             
@@ -138,7 +155,27 @@ module unit {
                 this.substance == other.substance &&
                 this.luminous_intensity == other.luminous_intensity
             );
-        }     
+        }
+
+        proc convert_to(unitCoefficient: real, unitConstant: real, unitSymbol: string): unit_array {
+            var unitArr = this.getArray();
+            for i in unitArr.domain {
+                unitArr[i] = unitCoefficient * unitArr[i] + unitConstant;
+            }
+
+            return new unit_array(
+                this.length,
+                this.mass,
+                this.time,
+                this.electric_current,
+                this.temperature,
+                this.substance,
+                this.luminous_intensity,
+                unitCoefficient,
+                unitConstant,
+                unitArr,
+                unitSymbol);
+        }    
 
         proc convert_to(unitObj: shared AbstractUnitObj): unit_array {                       
             var unitArr = this.getArray();
@@ -146,7 +183,7 @@ module unit {
                 unitArr[i] = unitObj.getCoefficient() * unitArr[i] + unitObj.getConstant();
             }
 
-            return new unit(
+            return new unit_array(
                 this.length,
                 this.mass,
                 this.time,
