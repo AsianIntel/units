@@ -1,6 +1,7 @@
 module unit {
     private use IO;
     private use unit_registry;
+    private use marker;
 
     record unit {
         param length: int;
@@ -88,117 +89,95 @@ module unit {
     }
 
     record unit_array {
-        param length: int;
-        param mass: int;
-        param time: int;
-        param electric_current: int;
-        param temperature: int;
-        param substance: int;
-        param luminous_intensity: int;
-        const coefficient: real; 
-        const constant: real;
+        var Marker: UnitMarker;
         //testing
         type eltType;
         param rank: int;
         param stridable: bool;
         var dom: domain(rank, stridable = stridable);
-        var arr: [dom] eltType;
-        var symbol: string;
+        var arr: [dom] eltType;        
 
-        proc init(param Length: int, param Mass: int, param Time: int, param ElectricCurrent: int, param Temperature: int, param Substance: int, param LuminousIntensity: int, coefficient: real, constant: real, in arr, symbol: string) {
-            this.length = Length;
-            this.mass = Mass;
-            this.time = Time;
-            this.electric_current = ElectricCurrent;
-            this.temperature = Temperature;
-            this.substance = Substance;
-            this.luminous_intensity = LuminousIntensity;
-            this.coefficient = coefficient;
-            this.constant = constant;
+        // proc init(param Length: int, param Mass: int, param Time: int, param ElectricCurrent: int, param Temperature: int, param Substance: int, param LuminousIntensity: int, coefficient: real, constant: real, in arr, symbol: string) {
+        //     this.length = Length;
+        //     this.mass = Mass;
+        //     this.time = Time;
+        //     this.electric_current = ElectricCurrent;
+        //     this.temperature = Temperature;
+        //     this.substance = Substance;
+        //     this.luminous_intensity = LuminousIntensity;
+        //     this.coefficient = coefficient;
+        //     this.constant = constant;
+        //     this.eltType = real;
+        //     this.rank = arr.domain.rank;
+        //     this.stridable = arr.domain.stridable;
+        //     this.dom = arr.domain;
+        //     this.arr = arr;   
+        //     this.symbol = symbol;
+        // }
+
+        proc init(unitmarker: UnitMarker, in arr) {
+            this.Marker = unitmarker;
             this.eltType = real;
             this.rank = arr.domain.rank;
             this.stridable = arr.domain.stridable;
             this.dom = arr.domain;
-            this.arr = arr;   
-            this.symbol = symbol;
+            this.arr = arr;                      
+        }        
+
+        proc getArray() {
+            return this.arr;
         }
-
-        
-
-        proc getArray(): real {
-            return arr;
-        }
-
-        proc getCoefficient(): real {
-            return coefficient;
-        }
-
-        proc getConstant(): real {
-            return constant;
-        }   
 
         proc from_base(val: real): real {
-            return coefficient * val + constant;
+            return Marker.getCoefficient() * val + Marker.getConstant();
         }
 
         proc to_base(val: real): real {
-            return (val - constant) / coefficient;
-        }
+            return (val - Marker.getConstant()) / Marker.getCoefficient();
+        }        
 
-        proc checkDims(other: unit_array) param {
-            return (
-                this.length == other.length &&
-                this.mass == other.mass &&
-                this.time == other.time &&
-                this.electric_current == other.electric_current &&
-                this.temperature == other.temperature &&
-                this.substance == other.substance &&
-                this.luminous_intensity == other.luminous_intensity
-            );
-        }
+        // proc convert_to(unitCoefficient: real, unitConstant: real, unitSymbol: string): unit_array {
+        //     var unitArr = this.getArray();
+        //     for i in unitArr.domain {
+        //         unitArr[i] = unitCoefficient * unitArr[i] + unitConstant;
+        //     }
 
-        proc convert_to(unitCoefficient: real, unitConstant: real, unitSymbol: string): unit_array {
-            var unitArr = this.getArray();
-            for i in unitArr.domain {
-                unitArr[i] = unitCoefficient * unitArr[i] + unitConstant;
-            }
+        //     return new unit_array(
+        //         this.length,
+        //         this.mass,
+        //         this.time,
+        //         this.electric_current,
+        //         this.temperature,
+        //         this.substance,
+        //         this.luminous_intensity,
+        //         unitCoefficient,
+        //         unitConstant,
+        //         unitArr,
+        //         unitSymbol);
+        // }    
 
-            return new unit_array(
-                this.length,
-                this.mass,
-                this.time,
-                this.electric_current,
-                this.temperature,
-                this.substance,
-                this.luminous_intensity,
-                unitCoefficient,
-                unitConstant,
-                unitArr,
-                unitSymbol);
-        }    
+        // proc convert_to(unitObj: shared AbstractUnitObj): unit_array {                       
+        //     var unitArr = this.getArray();
+        //     for i in unitArr.domain {
+        //         unitArr[i] = unitObj.getCoefficient() * unitArr[i] + unitObj.getConstant();
+        //     }
 
-        proc convert_to(unitObj: shared AbstractUnitObj): unit_array {                       
-            var unitArr = this.getArray();
-            for i in unitArr.domain {
-                unitArr[i] = unitObj.getCoefficient() * unitArr[i] + unitObj.getConstant();
-            }
-
-            return new unit_array(
-                this.length,
-                this.mass,
-                this.time,
-                this.electric_current,
-                this.temperature,
-                this.substance,
-                this.luminous_intensity,
-                unitObj.getCoefficient(),
-                unitObj.getConstant(),
-                unitArr,
-                unitObj.getSymbol());
-        }  
+        //     return new unit_array(
+        //         this.length,
+        //         this.mass,
+        //         this.time,
+        //         this.electric_current,
+        //         this.temperature,
+        //         this.substance,
+        //         this.luminous_intensity,
+        //         unitObj.getCoefficient(),
+        //         unitObj.getConstant(),
+        //         unitArr,
+        //         unitObj.getSymbol());
+        // }  
 
         proc writeThis(f) throws {
-            f <~> "{dims = (" <~> this.length <~> ", " <~> this.mass <~> ", " <~> this.time <~> ", " <~> this.electric_current <~> ", " <~> this.temperature <~> ", " <~> this.substance <~> ", " <~> this.luminous_intensity <~> "), coefficient = " <~> this.coefficient <~> ", constant = " <~> this.constant <~> ", array = [" <~> this.arr <~> "]" <~> ", symbol = " <~> this.symbol <~> "}";
+            f <~> "{dims = (" <~> this.Marker.length <~> ", " <~> this.Marker.mass <~> ", " <~> this.Marker.time <~> ", " <~> this.Marker.electric_current <~> ", " <~> this.Marker.temperature <~> ", " <~> this.Marker.substance <~> ", " <~> this.Marker.luminous_intensity <~> "), coefficient = " <~> this.Marker.coefficient <~> ", constant = " <~> this.Marker.constant <~> ", array = [" <~> this.arr <~> "]" <~> ", symbol = " <~> this.Marker.symbol <~> "}";
         }
     }
 
@@ -275,7 +254,7 @@ module unit {
         );
     }
 
-    operator +(lhs: unit_array, rhs: unit_array): unit_array where lhs.rank == rhs.rank && lhs.checkDims(rhs) {
+    operator +(lhs: unit_array, rhs: unit_array): unit_array where lhs.rank == rhs.rank && lhs.Marker.checkDims(rhs.Marker) {
         var rhsArr = rhs.getArray();        
         for i in rhsArr.domain {
             var rhs_val = lhs.from_base(rhs.to_base(rhs.arr[i]));
@@ -283,17 +262,8 @@ module unit {
         }
         
         return new unit_array(
-            lhs.length,
-            lhs.mass,
-            lhs.time,
-            lhs.electric_current,
-            lhs.temperature,
-            lhs.substance,
-            lhs.luminous_intensity,           
-            lhs.coefficient,
-            lhs.constant,            
-            lhs.arr + rhsArr,
-            lhs.symbol
+            lhs.Marker,    
+            lhs.arr + rhsArr           
         );
     }
 
@@ -314,7 +284,7 @@ module unit {
         );
     }
 
-    operator -(lhs: unit_array, rhs: unit_array): unit_array where lhs.rank == rhs.rank && lhs.checkDims(rhs) {
+    operator -(lhs: unit_array, rhs: unit_array): unit_array where lhs.rank == rhs.rank && lhs.Marker.checkDims(rhs.Marker) {
         var rhsArr = rhs.getArray();        
         for i in rhsArr.domain {
             var rhs_val = lhs.from_base(rhs.to_base(rhs.arr[i]));
@@ -322,17 +292,8 @@ module unit {
         }
         
         return new unit_array(
-            lhs.length,
-            lhs.mass,
-            lhs.time,
-            lhs.electric_current,
-            lhs.temperature,
-            lhs.substance,
-            lhs.luminous_intensity,           
-            lhs.coefficient,
-            lhs.constant,            
-            lhs.arr - rhsArr,
-            lhs.symbol
+            lhs.Marker,    
+            lhs.arr - rhsArr           
         );
     }  
 
@@ -341,7 +302,7 @@ module unit {
         return lhs._value == rhs_val;
     }  
 
-    operator ==(lhs: unit_array, rhs: unit_array): bool where lhs.checkDims(rhs) {
+    operator ==(lhs: unit_array, rhs: unit_array) where lhs.Marker.checkDims(rhs.Marker) {
         var rhsArr = rhs.getArray();        
         for i in rhsArr.domain {
             var rhs_val = lhs.from_base(rhs.to_base(rhs.arr[i]));
@@ -355,39 +316,30 @@ module unit {
         return !(lhs == rhs);
     }
 
-    operator !=(lhs: unit_array, rhs: unit_array): bool where lhs.checkDims(rhs) {
+    operator !=(lhs: unit_array, rhs: unit_array) where lhs.Marker.checkDims(rhs.Marker) {
         return !(lhs == rhs);
     }
 
-    operator *(lhs: real, rhs: unit): unit_array {        
-        return new unit_array(
-            rhs.length,
-            rhs.mass,
-            rhs.time,
-            rhs.electric_current,
-            rhs.temperature,
-            rhs.substance,
-            rhs.luminous_intensity,
-            rhs.coefficient,
-            rhs.constant,
-            lhs * rhs._value,
-            rhs.symbol
-        );
-    }
+    // operator *(lhs: real, rhs: unit): unit_array {        
+    //     return new unit_array(
+    //         rhs.length,
+    //         rhs.mass,
+    //         rhs.time,
+    //         rhs.electric_current,
+    //         rhs.temperature,
+    //         rhs.substance,
+    //         rhs.luminous_intensity,
+    //         rhs.coefficient,
+    //         rhs.constant,
+    //         lhs * rhs._value,
+    //         rhs.symbol
+    //     );
+    // }
 
     operator *(lhs: real, rhs: unit_array): unit_array {        
         return new unit_array(
-            rhs.length,
-            rhs.mass,
-            rhs.time,
-            rhs.electric_current,
-            rhs.temperature,
-            rhs.substance,
-            rhs.luminous_intensity,
-            rhs.coefficient,
-            rhs.constant,
-            lhs * rhs.arr,
-            rhs.symbol
+            rhs.Marker,
+            lhs * rhs.arr          
         );
     }
 
@@ -409,56 +361,53 @@ module unit {
     }
 
     operator *(lhs: unit_array, rhs: unit_array): unit_array where lhs.rank == rhs.rank {
-        var rhsArr = rhs.getArray();        
+        var rhsArr = rhs.getArray(); 
+        var lhsArr = lhs.getArray();       
         for i in rhsArr.domain {
-            var rhs_val = lhs.from_base(rhs.to_base(rhs.arr[i]));
+            var rhs_val = rhs.to_base(rhs.arr[i]);
             rhsArr[i] = rhs_val;
         }
+        for i in lhsArr.domain {
+            var lhs_val = lhs.to_base(lhs.arr[i]);
+            lhsArr[i] = lhs_val;
+        }
 
-        return new unit_array(
-            lhs.length + rhs.length,
-            lhs.mass + rhs.mass,
-            lhs.time + rhs.time,
-            lhs.electric_current + rhs.electric_current,
-            lhs.temperature + rhs.temperature,
-            lhs.substance + rhs.substance,
-            lhs.luminous_intensity + rhs.luminous_intensity,
-            1,
-            0,
-            lhs.arr * rhsArr,
-            "derived_unit"
+        return new unit_array(new UnitMarker(
+                lhs.Marker.length + rhs.Marker.length,
+                lhs.Marker.mass + rhs.Marker.mass,
+                lhs.Marker.time + rhs.Marker.time,
+                lhs.Marker.electric_current + rhs.Marker.electric_current,
+                lhs.Marker.temperature + rhs.Marker.temperature,
+                lhs.Marker.substance + rhs.Marker.substance,
+                lhs.Marker.luminous_intensity + rhs.Marker.luminous_intensity,
+                1,
+                0,
+                "derived_unit"
+            ),            
+            lhs.arr * rhsArr            
         );
     }
 
-    operator /(lhs: unit, rhs: real): unit_array {        
-        return new unit_array(
-            lhs.length,
-            lhs.mass,
-            lhs.time,
-            lhs.electric_current,
-            lhs.temperature,
-            lhs.substance,
-            lhs.luminous_intensity,
-            lhs.coefficient,
-            lhs.constant,
-            lhs._value / rhs,
-            lhs.symbol
-        );
-    }
+    // operator /(lhs: unit, rhs: real): unit_array {        
+    //     return new unit_array(
+    //         lhs.length,
+    //         lhs.mass,
+    //         lhs.time,
+    //         lhs.electric_current,
+    //         lhs.temperature,
+    //         lhs.substance,
+    //         lhs.luminous_intensity,
+    //         lhs.coefficient,
+    //         lhs.constant,
+    //         lhs._value / rhs,
+    //         lhs.symbol
+    //     );
+    // }
 
     operator /(lhs: unit_array, rhs: real): unit_array {        
         return new unit_array(
-            lhs.length,
-            lhs.mass,
-            lhs.time,
-            lhs.electric_current,
-            lhs.temperature,
-            lhs.substance,
-            lhs.luminous_intensity,
-            lhs.coefficient,
-            lhs.constant,
-            lhs.arr / rhs,
-            lhs.symbol
+            lhs.Marker,
+            lhs.arr / rhs            
         );
     }
 }
