@@ -136,45 +136,49 @@ module unit {
             return (val - Marker.getConstant()) / Marker.getCoefficient();
         }        
 
-        // proc convert_to(unitCoefficient: real, unitConstant: real, unitSymbol: string): unit_array {
-        //     var unitArr = this.getArray();
-        //     for i in unitArr.domain {
-        //         unitArr[i] = unitCoefficient * unitArr[i] + unitConstant;
-        //     }
+        proc convert_to(unitCoefficient: real, unitConstant: real, unitSymbol: string): unit_array {
+            var unitArr = this.getArray();
+            for i in unitArr.domain {
+                unitArr[i] = unitCoefficient * this.to_base(unitArr[i]) + unitConstant;
+            }
 
-        //     return new unit_array(
-        //         this.length,
-        //         this.mass,
-        //         this.time,
-        //         this.electric_current,
-        //         this.temperature,
-        //         this.substance,
-        //         this.luminous_intensity,
-        //         unitCoefficient,
-        //         unitConstant,
-        //         unitArr,
-        //         unitSymbol);
-        // }    
+            return new unit_array(
+                new UnitMarker(
+                    this.Marker.length,
+                    this.Marker.mass,
+                    this.Marker.time,
+                    this.Marker.electric_current,
+                    this.Marker.temperature,
+                    this.Marker.substance,
+                    this.Marker.luminous_intensity,
+                    unitCoefficient,
+                    unitConstant,
+                    unitSymbol
+                ),                
+                unitArr);
+        }    
 
-        // proc convert_to(unitObj: shared AbstractUnitObj): unit_array {                       
-        //     var unitArr = this.getArray();
-        //     for i in unitArr.domain {
-        //         unitArr[i] = unitObj.getCoefficient() * unitArr[i] + unitObj.getConstant();
-        //     }
+        proc convert_to(unitObj: shared AbstractUnitObj): unit_array {                       
+            var unitArr = this.getArray();
+            for i in unitArr.domain {
+                unitArr[i] = unitObj.getCoefficient() * this.to_base(unitArr[i]) + unitObj.getConstant();
+            }
 
-        //     return new unit_array(
-        //         this.length,
-        //         this.mass,
-        //         this.time,
-        //         this.electric_current,
-        //         this.temperature,
-        //         this.substance,
-        //         this.luminous_intensity,
-        //         unitObj.getCoefficient(),
-        //         unitObj.getConstant(),
-        //         unitArr,
-        //         unitObj.getSymbol());
-        // }  
+            return new unit_array(
+                new UnitMarker(
+                    this.Marker.length,
+                    this.Marker.mass,
+                    this.Marker.time,
+                    this.Marker.electric_current,
+                    this.Marker.temperature,
+                    this.Marker.substance,
+                    this.Marker.luminous_intensity,
+                    unitObj.getCoefficient(),
+                    unitObj.getConstant(),
+                    unitObj.getSymbol()
+                ),               
+                unitArr);
+        }  
 
         proc writeThis(f) throws {
             f <~> "{dims = (" <~> this.Marker.length <~> ", " <~> this.Marker.mass <~> ", " <~> this.Marker.time <~> ", " <~> this.Marker.electric_current <~> ", " <~> this.Marker.temperature <~> ", " <~> this.Marker.substance <~> ", " <~> this.Marker.luminous_intensity <~> "), coefficient = " <~> this.Marker.coefficient <~> ", constant = " <~> this.Marker.constant <~> ", array = [" <~> this.arr <~> "]" <~> ", symbol = " <~> this.Marker.symbol <~> "}";
