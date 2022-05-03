@@ -1,4 +1,6 @@
 module marker {
+    private use unit_registry;
+
     record UnitMarker {
         param length: int;
         param mass: int;
@@ -36,5 +38,31 @@ module marker {
         }
     }    
 
+    proc lengthMarker(unitObj: shared AbstractUnitObj): UnitMarker {
+        return new UnitMarker(1, 0, 0, 0, 0, 0, 0, unitObj.getCoefficient(), unitObj.getConstant(), unitObj.getSymbol());
+    }
+
+    proc massMarker(unitObj: shared AbstractUnitObj): UnitMarker {
+        return new UnitMarker(0, 1, 0, 0, 0, 0, 0, unitObj.getCoefficient(), unitObj.getConstant(), unitObj.getSymbol());
+    }
+
+    proc timeMarker(unitObj: shared AbstractUnitObj): UnitMarker {
+        return new UnitMarker(0, 0, 1, 0, 0, 0, 0, unitObj.getCoefficient(), unitObj.getConstant(), unitObj.getSymbol());
+    }
     
+    proc electricCurrentMarker(unitObj: shared AbstractUnitObj): UnitMarker {
+        return new UnitMarker(0, 0, 0, 1, 0, 0, 0, unitObj.getCoefficient(), unitObj.getConstant(), unitObj.getSymbol());
+    }
+
+    proc temperatureMarker(unitObj: shared AbstractUnitObj): UnitMarker {
+        return new UnitMarker(0, 0, 0, 0, 1, 0, 0, unitObj.getCoefficient(), unitObj.getConstant(), unitObj.getSymbol());
+    }
+
+    proc substanceMarker(unitObj: shared AbstractUnitObj): UnitMarker {
+        return new UnitMarker(0, 0, 0, 0, 0, 1, 0, unitObj.getCoefficient(), unitObj.getConstant(), unitObj.getSymbol());
+    }
+
+    proc luminousIntensityMarker(unitObj: shared AbstractUnitObj): UnitMarker {
+        return new UnitMarker(0, 0, 0, 0, 0, 0, 1, unitObj.getCoefficient(), unitObj.getConstant(), unitObj.getSymbol());
+    }    
 }
