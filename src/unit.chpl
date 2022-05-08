@@ -138,8 +138,8 @@ module unit {
 
         proc convert_to(unitCoefficient: real, unitConstant: real, unitSymbol: string): unit_array {
             var unitArr = this.getArray();
-            for i in unitArr.domain {
-                unitArr[i] = unitCoefficient * this.to_base(unitArr[i]) + unitConstant;
+            foreach i in unitArr {
+                i = unitCoefficient * this.to_base(i) + unitConstant;
             }
 
             return new unit_array(
@@ -160,8 +160,8 @@ module unit {
 
         proc convert_to(unitObj: shared AbstractUnitObj): unit_array {                       
             var unitArr = this.getArray();
-            for i in unitArr.domain {
-                unitArr[i] = unitObj.getCoefficient() * this.to_base(unitArr[i]) + unitObj.getConstant();
+            foreach i in unitArr {
+                i = unitObj.getCoefficient() * this.to_base(i) + unitObj.getConstant();
             }
 
             return new unit_array(
@@ -260,9 +260,8 @@ module unit {
 
     operator +(lhs: unit_array, rhs: unit_array): unit_array where lhs.rank == rhs.rank && lhs.Marker.checkDims(rhs.Marker) {
         var rhsArr = rhs.getArray();        
-        for i in rhsArr.domain {
-            var rhs_val = lhs.from_base(rhs.to_base(rhs.arr[i]));
-            rhsArr[i] = rhs_val;
+        foreach i in rhsArr {
+            i = lhs.from_base(rhs.to_base(i));            
         }
         
         return new unit_array(
@@ -290,9 +289,8 @@ module unit {
 
     operator -(lhs: unit_array, rhs: unit_array): unit_array where lhs.rank == rhs.rank && lhs.Marker.checkDims(rhs.Marker) {
         var rhsArr = rhs.getArray();        
-        for i in rhsArr.domain {
-            var rhs_val = lhs.from_base(rhs.to_base(rhs.arr[i]));
-            rhsArr[i] = rhs_val;
+        foreach i in rhsArr {
+            i = lhs.from_base(rhs.to_base(i));
         }
         
         return new unit_array(
@@ -308,9 +306,8 @@ module unit {
 
     operator ==(lhs: unit_array, rhs: unit_array) where lhs.Marker.checkDims(rhs.Marker) {
         var rhsArr = rhs.getArray();        
-        for i in rhsArr.domain {
-            var rhs_val = lhs.from_base(rhs.to_base(rhs.arr[i]));
-            rhsArr[i] = rhs_val;
+        foreach i in rhsArr {
+            i = lhs.from_base(rhs.to_base(i));
         }
         
         return lhs.arr == rhsArr;
@@ -367,13 +364,11 @@ module unit {
     operator *(lhs: unit_array, rhs: unit_array): unit_array where lhs.rank == rhs.rank {
         var rhsArr = rhs.getArray(); 
         var lhsArr = lhs.getArray();       
-        for i in rhsArr.domain {
-            var rhs_val = rhs.to_base(rhs.arr[i]);
-            rhsArr[i] = rhs_val;
+        foreach i in rhsArr{
+            i = rhs.to_base(i);            
         }
-        for i in lhsArr.domain {
-            var lhs_val = lhs.to_base(lhs.arr[i]);
-            lhsArr[i] = lhs_val;
+        foreach i in lhsArr {
+            i = lhs.to_base(i);            
         }
 
         return new unit_array(new UnitMarker(
@@ -388,7 +383,7 @@ module unit {
                 0,
                 "derived_unit"
             ),            
-            lhs.arr * rhsArr            
+            lhsArr * rhsArr            
         );
     }
 
