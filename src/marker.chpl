@@ -41,28 +41,56 @@ module marker {
     proc lengthMarker(unitObj: shared AbstractUnitObj): UnitMarker {
         return new UnitMarker(1, 0, 0, 0, 0, 0, 0, unitObj.getCoefficient(), unitObj.getConstant(), unitObj.getSymbol());
     }
+    
+    proc lengthMarker(coefficient: real, constant: real, symbol: string): UnitMarker {
+        return new UnitMarker(1, 0, 0, 0, 0, 0, 0, coefficient, constant, symbol);
+    }
 
     proc massMarker(unitObj: shared AbstractUnitObj): UnitMarker {
         return new UnitMarker(0, 1, 0, 0, 0, 0, 0, unitObj.getCoefficient(), unitObj.getConstant(), unitObj.getSymbol());
+    }
+    
+    proc massMarker(coefficient: real, constant: real, symbol: string): UnitMarker {
+        return new UnitMarker(0, 1, 0, 0, 0, 0, 0, coefficient, constant, symbol);
     }
 
     proc timeMarker(unitObj: shared AbstractUnitObj): UnitMarker {
         return new UnitMarker(0, 0, 1, 0, 0, 0, 0, unitObj.getCoefficient(), unitObj.getConstant(), unitObj.getSymbol());
     }
     
+    proc timeMarker(coefficient: real, constant: real, symbol: string): UnitMarker {
+        return new UnitMarker(0, 0, 1, 0, 0, 0, 0, coefficient, constant, symbol);
+    }
+    
     proc electricCurrentMarker(unitObj: shared AbstractUnitObj): UnitMarker {
         return new UnitMarker(0, 0, 0, 1, 0, 0, 0, unitObj.getCoefficient(), unitObj.getConstant(), unitObj.getSymbol());
+    }
+    
+    proc electricCurrentMarker(coefficient: real, constant: real, symbol: string): UnitMarker {
+        return new UnitMarker(0, 0, 0, 1, 0, 0, 0, coefficient, constant, symbol);
     }
 
     proc temperatureMarker(unitObj: shared AbstractUnitObj): UnitMarker {
         return new UnitMarker(0, 0, 0, 0, 1, 0, 0, unitObj.getCoefficient(), unitObj.getConstant(), unitObj.getSymbol());
     }
+    
+    proc temperatureMarker(coefficient: real, constant: real, symbol: string): UnitMarker {
+        return new UnitMarker(0, 0, 0, 0, 1, 0, 0, coefficient, constant, symbol);
+    }
 
     proc substanceMarker(unitObj: shared AbstractUnitObj): UnitMarker {
         return new UnitMarker(0, 0, 0, 0, 0, 1, 0, unitObj.getCoefficient(), unitObj.getConstant(), unitObj.getSymbol());
     }
+    
+    proc substanceMarker(coefficient: real, constant: real, symbol: string): UnitMarker {
+        return new UnitMarker(0, 0, 0, 0, 0, 1, 0, coefficient, constant, symbol);
+    }
 
     proc luminousIntensityMarker(unitObj: shared AbstractUnitObj): UnitMarker {
         return new UnitMarker(0, 0, 0, 0, 0, 0, 1, unitObj.getCoefficient(), unitObj.getConstant(), unitObj.getSymbol());
-    }    
+    } 
+    
+    proc luminousIntensityMarker(coefficient: real, constant: real, symbol: string): UnitMarker {
+        return new UnitMarker(0, 0, 0, 0, 0, 0, 1, coefficient, constant, symbol);
+    }   
 }
