@@ -4,7 +4,7 @@ module mass {
     private use marker;
 
     proc mass(unitObj: shared AbstractUnitObj, in arr): unit_array {
-        return new unit_array(new UnitMarker(0, 1, 0, 0, 0, 0, 0, unitObj.getCoefficient(), unitObj.getConstant(), unitObj.getSymbol()), arr);
+        return new unit_array(massMarker(unitObj), arr);
     }
 
     proc mass(unitObj: shared AbstractUnitObj, value: real): unit {
@@ -12,7 +12,7 @@ module mass {
     }    
     
     proc mass(coefficient: real, constant: real, in arr, symbol: string): unit_array {
-        return new unit_array(new UnitMarker(0, 1, 0, 0, 0, 0, 0, coefficient, constant, symbol), arr);
+        return new unit_array(massMarker(coefficient, constant, symbol), arr);
     }
 
     proc mass(coefficient: real, constant: real, value: real, symbol: string): unit {
