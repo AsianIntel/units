@@ -97,24 +97,6 @@ module unit {
         var dom: domain(rank, stridable = stridable);
         var arr: [dom] eltType;        
 
-        // proc init(param Length: int, param Mass: int, param Time: int, param ElectricCurrent: int, param Temperature: int, param Substance: int, param LuminousIntensity: int, coefficient: real, constant: real, in arr, symbol: string) {
-        //     this.length = Length;
-        //     this.mass = Mass;
-        //     this.time = Time;
-        //     this.electric_current = ElectricCurrent;
-        //     this.temperature = Temperature;
-        //     this.substance = Substance;
-        //     this.luminous_intensity = LuminousIntensity;
-        //     this.coefficient = coefficient;
-        //     this.constant = constant;
-        //     this.eltType = real;
-        //     this.rank = arr.domain.rank;
-        //     this.stridable = arr.domain.stridable;
-        //     this.dom = arr.domain;
-        //     this.arr = arr;   
-        //     this.symbol = symbol;
-        // }
-
         proc init(unitmarker: UnitMarker, in arr) {
             this.Marker = unitmarker;
             this.eltType = real;
@@ -321,21 +303,21 @@ module unit {
         return !(lhs == rhs);
     }
 
-    // operator *(lhs: real, rhs: unit): unit_array {        
-    //     return new unit_array(
-    //         rhs.length,
-    //         rhs.mass,
-    //         rhs.time,
-    //         rhs.electric_current,
-    //         rhs.temperature,
-    //         rhs.substance,
-    //         rhs.luminous_intensity,
-    //         rhs.coefficient,
-    //         rhs.constant,
-    //         lhs * rhs._value,
-    //         rhs.symbol
-    //     );
-    // }
+    operator *(lhs: real, rhs: unit): unit {        
+        return new unit (
+            rhs.length,
+            rhs.mass,
+            rhs.time,
+            rhs.electric_current,
+            rhs.temperature,
+            rhs.substance,
+            rhs.luminous_intensity,
+            rhs.coefficient,
+            rhs.constant,
+            lhs * rhs._value,
+            rhs.symbol
+        );
+    }
 
     operator *(lhs: real, rhs: unit_array): unit_array {        
         return new unit_array(
@@ -345,7 +327,8 @@ module unit {
     }
 
     operator *(lhs: unit, rhs: unit): unit {
-        var rhs_val = lhs.from_base(rhs.to_base());
+        var lhs_val = lhs.to_base();
+        var rhs_val = rhs.to_base();
         return new unit(
             lhs.length,
             lhs.mass,
@@ -354,10 +337,10 @@ module unit {
             lhs.temperature,
             lhs.substance,
             lhs.luminous_intensity,           
-            lhs.coefficient,
-            lhs.constant,
-            lhs._value * rhs_val,
-            lhs.symbol
+            1,
+            0,
+            lhs_val * rhs_val,
+            "derived_unit"
         );
     }
 
@@ -387,21 +370,21 @@ module unit {
         );
     }
 
-    // operator /(lhs: unit, rhs: real): unit_array {        
-    //     return new unit_array(
-    //         lhs.length,
-    //         lhs.mass,
-    //         lhs.time,
-    //         lhs.electric_current,
-    //         lhs.temperature,
-    //         lhs.substance,
-    //         lhs.luminous_intensity,
-    //         lhs.coefficient,
-    //         lhs.constant,
-    //         lhs._value / rhs,
-    //         lhs.symbol
-    //     );
-    // }
+    operator /(lhs: unit, rhs: real): unit {        
+        return new unit_array(
+            lhs.length,
+            lhs.mass,
+            lhs.time,
+            lhs.electric_current,
+            lhs.temperature,
+            lhs.substance,
+            lhs.luminous_intensity,
+            lhs.coefficient,
+            lhs.constant,
+            lhs._value / rhs,
+            lhs.symbol
+        );
+    }
 
     operator /(lhs: unit_array, rhs: real): unit_array {        
         return new unit_array(
