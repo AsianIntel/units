@@ -1,20 +1,25 @@
 use UnitTest;
 use unit;
+use unit_registry;
 use luminous_intensity;
 
 proc luminous_intensity_compile(test: borrowed Test) throws {
-    var cd = new candela(1);
-    var kcd = new kilocandela(1);    
+    var unitsystem = set_unitSystem("MKS");
+
+    var cd = luminous_intensity(unitsystem.getLumIntensityType("candela"), 1);
+    var kcd = luminous_intensity(unitsystem.getLumIntensityType("kilocandela"), 1);    
     test.assertTrue(true);
 }
 
 proc luminous_intensity_addition(test: borrowed Test) throws {
-    var cd1 = new candela(1);
-    var cd2 = new candela(2);
+    var unitsystem = set_unitSystem("MKS");
+
+    var cd1 = luminous_intensity(unitsystem.getLumIntensityType("candela"), 1);
+    var cd2 = luminous_intensity(unitsystem.getLumIntensityType("candela"), 2);
     test.assertEqual((cd1 + cd2).value(), 3.0);
 
-    var kcd1 = new kilocandela(1);
-    var kcd2 = new kilocandela(2);
+    var kcd1 = luminous_intensity(unitsystem.getLumIntensityType("kilocandela"), 1);
+    var kcd2 = luminous_intensity(unitsystem.getLumIntensityType("kilocandela"), 2);
     test.assertEqual((kcd1 + kcd2).value(), 3.0);
 
     test.assertEqual((kcd1 + cd1).value(), 1.001);
@@ -22,8 +27,10 @@ proc luminous_intensity_addition(test: borrowed Test) throws {
 }
 
 proc current_operations(test: borrowed Test) throws {
-    var kcd = new kilocandela(1);
-    var cd = new candela(1);
+    var unitsystem = set_unitSystem("MKS");
+
+    var kcd = luminous_intensity(unitsystem.getLumIntensityType("kilocandela"), 1);
+    var cd = luminous_intensity(unitsystem.getLumIntensityType("candela"), 1);
     test.assertNotEqual(kcd, cd);
 
     var kcd2 = 3 * kcd;
