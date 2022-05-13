@@ -1,20 +1,25 @@
 use UnitTest;
 use unit;
+use unit_registry;
 use length;
 
 proc length_compile(test: borrowed Test) throws {
-    var m = new meter(1);
-    var cm = new centimetre(1);
+    var unitsystem = set_unitSystem("MKS");
+
+    var m = length(unitsystem.getLengthType("meter"), 1);
+    var cm = length(unitsystem.getLengthType("centimeter"), 1);
     test.assertTrue(true);
 }
 
 proc length_addition(test: borrowed Test) throws {
-    var m1 = new meter(1);
-    var m2 = new meter(2);
+    var unitsystem = set_unitSystem("MKS"); 
+
+    var m1 = length(unitsystem.getLengthType("meter"), 1);
+    var m2 = length(unitsystem.getLengthType("meter"), 2);
     test.assertEqual((m1 + m2).value(), 3.0);
 
-    var cm1 = new centimetre(1);
-    var cm2 = new centimetre(2);
+    var cm1 = length(unitsystem.getLengthType("centimeter"), 1);
+    var cm2 = length(unitsystem.getLengthType("centimeter"), 2);
     test.assertEqual((cm1 + cm2).value(), 3.0);
 
     test.assertEqual((m1 + cm1).value(), 1.01);
@@ -22,8 +27,10 @@ proc length_addition(test: borrowed Test) throws {
 }
 
 proc length_operations(test: borrowed Test) throws {
-    var m = new meter(1);
-    var cm = new centimetre(1);
+    var unitsystem = set_unitSystem("MKS");
+
+    var m = length(unitsystem.getLengthType("meter"), 1);
+    var cm = length(unitsystem.getLengthType("centimeter"), 1);
     test.assertNotEqual(m, cm);
 
     var m2 = 3 * m;
