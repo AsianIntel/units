@@ -223,7 +223,7 @@ module unit {
         }
     }
 
-    operator +(lhs: unit, rhs: unit): unit {
+    operator +(lhs: unit, rhs: unit): unit where lhs.checkDims(rhs) {
         var rhs_val = lhs.from_base(rhs.to_base());
         return new unit(
             lhs.length,
@@ -252,7 +252,7 @@ module unit {
         );
     }
 
-    operator -(lhs: unit, rhs: unit): unit {
+    operator -(lhs: unit, rhs: unit): unit where lhs.checkDims(rhs) {
         var rhs_val = lhs.from_base(rhs.to_base());
         return new unit(
             lhs.length,
