@@ -1,7 +1,9 @@
 module marker {
     private use unit_registry;
 
-    record UnitMarker {
+    class AbstractUnitMarker {}
+
+    class UnitMarker: AbstractUnitMarker {
         param length: int;
         param mass: int;
         param time: int;
